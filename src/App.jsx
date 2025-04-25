@@ -1,13 +1,11 @@
 import React from "react";
-import "./app.css";
-import Login from "./components/login/Login";
+import PumpManagement from "./pumpManagement";
+import "./App.css";
 
-const App = () => {
+function App() {
   return (
-    <>
-     <Login />
-    </>
+      <PumpManagement />
   );
-};
+}
 
 export default App;
