@@ -1,6 +1,6 @@
 import React from "react";
 import "./app.css";
-import Pump from "./components/pump/pump";
+import Pump from "./components/Prices/Prices";
 
 const App = () => {
   return (
