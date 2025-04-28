@@ -1,11 +1,12 @@
 import React from "react";
 import "./app.css";
-import Pump from "./components/Prices/Prices";
+import Login from "./components/login/Login";
+import Dashboard from "./components/login/DASHBOARD/dashboard";
 
 const App = () => {
   return (
     <>
-     <Pump />
+     <Dashboard />
     </>
   );
 };
