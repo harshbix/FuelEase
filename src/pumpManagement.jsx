@@ -4,7 +4,21 @@ import DataTable from "react-data-table-component";
 const columns = [
   { name: "Pump Number", selector: row => row.pumpNumber, sortable: true },
   { name: "Location", selector: row => row.location, sortable: true },
-  { name: "Fuel Types", cell: row => row.fuelTypes.join(", ") },
+  {
+    name: "Fuel Types",
+    cell: row => (
+      <div className="flex gap-1">
+        {row.fuelTypes.map((type, idx) => (
+          <button
+            key={idx}
+            className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs font-semibold"
+          >
+            {type}
+          </button>
+        ))}
+      </div>
+    ),
+  },
   { name: "Flow Rate", selector: row => row.flowRate },
   { name: "Assignment", selector: row => row.assignment },
   {
@@ -13,17 +27,22 @@ const columns = [
   },
   {
     name: "Health",
-    cell: row => <span className={`font-semibold ${healthColor[row.health]}`}>{row.health}</span>,
+    cell: row => (
+      <div className="flex items-center gap-1">
+        <span className={`${dotColor[row.health]} w-2 h-2 rounded-full inline-block`}></span>
+        <span className={`font-semibold ${healthColor[row.health]}`}>{row.health}</span>
+      </div>
+    ),
   },
   { name: "Last Maintenance", selector: row => row.lastMaintenance },
   {
     name: "Actions",
     cell: () => (
-      <div className="flex gap-2 overflow-hidden">
-        <button className="px-1 py-1 border rounded bg-blue-500 text-white text-sm leading-tight">
+      <div className="flex flex-col gap-2 w-full">
+        <button className="edit-btn px-3 py-2 border rounded bg-blue-500 text-white text-sm w-full">
           Edit
         </button>
-        <button className="px-1 py-1 border rounded bg-gray-500 text-white text-sm leading-tight">
+        <button className="maint-btn px-3 py-2 border rounded bg-gray-500 text-white text-sm w-full">
           Maintenance
         </button>
       </div>
@@ -76,23 +95,24 @@ const healthColor = {
   Faulty: "text-red-600",
 };
 
+const dotColor = {
+  OK: "bg-green-500",
+  Warning: "bg-yellow-500",
+  Faulty: "bg-red-500",
+};
+
 export default function PumpManagement() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [locationFilter, setLocationFilter] = useState("All");
 
   const filteredData = pumpsData.filter(pump => {
-    const matchesSearch =
-      pump.pumpNumber.toLowerCase().includes(search.toLowerCase()) ||
-      pump.location.toLowerCase().includes(search.toLowerCase());
+    const searchLower = search.toLowerCase();
+    const matchesLocation = pump.location.toLowerCase().includes(searchLower);
+    const matchesStatus = statusFilter === "All" || pump.status === statusFilter;
+    const matchesLocationFilter = locationFilter === "All" || pump.location === locationFilter;
 
-    const matchesStatus =
-      statusFilter === "All" || pump.status === statusFilter;
-
-    const matchesLocation =
-      locationFilter === "All" || pump.location === locationFilter;
-
-    return matchesSearch && matchesStatus && matchesLocation;
+    return matchesLocation && matchesStatus && matchesLocationFilter;
   });
 
   return (
@@ -105,7 +125,7 @@ export default function PumpManagement() {
       <div className="flex gap-4 mb-4">
         <input
           type="text"
-          placeholder="Search pumps..."
+          placeholder="Search by location..."
           className="w-1/3 px-3 py-2 border rounded"
           value={search}
           onChange={e => setSearch(e.target.value)}
@@ -142,4 +162,3 @@ export default function PumpManagement() {
     </div>
   );
 }
-
