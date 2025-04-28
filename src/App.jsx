@@ -1,14 +1,13 @@
 import React from "react";
-import PumpManagement from "./PumpManagement";
+import PumpManagement from "./pumpManagement";
+import "./App.css";
 import StaffManagement from "./StaffManagement";
-import "./app.css";
 
 function App() {
   return (
-    <>
-      <PumpManagement />
+  
       <StaffManagement />
-    </>
+         
   );
 }
 
