@@ -23,14 +23,22 @@ const columns = [
   { name: "Assignment", selector: row => row.assignment },
   {
     name: "Status",
-    cell: row => <span className={`font-semibold ${statusColor[row.status]}`}>{row.status}</span>,
+    cell: row => (
+      <span className={`font-semibold ${statusColor[row.status]}`}>
+        {row.status}
+      </span>
+    ),
   },
   {
     name: "Health",
     cell: row => (
       <div className="flex items-center gap-1">
-        <span className={`${dotColor[row.health]} w-2 h-2 rounded-full inline-block`}></span>
-        <span className={`font-semibold ${healthColor[row.health]}`}>{row.health}</span>
+        <span
+          className={`${dotColor[row.health]} w-2 h-2 rounded-full inline-block`}
+        ></span>
+        <span className={`font-semibold ${healthColor[row.health]}`}>
+          {row.health}
+        </span>
       </div>
     ),
   },
@@ -38,15 +46,17 @@ const columns = [
   {
     name: "Actions",
     cell: () => (
-      <div className="flex flex-col gap-2 w-full">
-        <button className="edit-btn px-3 py-2 border rounded bg-blue-500 text-white text-sm w-full">
+      <div className="w-full flex flex-col sm:flex-row gap-2">
+        <button className="flex-1 min-w-[100px] px-3 py-2 border rounded bg-blue-500 text-white text-sm">
           Edit
         </button>
-        <button className="maint-btn px-3 py-2 border rounded bg-gray-500 text-white text-sm w-full">
+        <button className="flex-1 min-w-[100px] px-3 py-2 border rounded bg-gray-500 text-white text-sm">
           Maintenance
         </button>
       </div>
     ),
+    grow: 2,
+    wrap: true,
   },
 ];
 
@@ -110,7 +120,8 @@ export default function PumpManagement() {
     const searchLower = search.toLowerCase();
     const matchesLocation = pump.location.toLowerCase().includes(searchLower);
     const matchesStatus = statusFilter === "All" || pump.status === statusFilter;
-    const matchesLocationFilter = locationFilter === "All" || pump.location === locationFilter;
+    const matchesLocationFilter =
+      locationFilter === "All" || pump.location === locationFilter;
 
     return matchesLocation && matchesStatus && matchesLocationFilter;
   });
@@ -119,14 +130,16 @@ export default function PumpManagement() {
     <div className="p-8 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Pump Management</h1>
-        <button className="px-4 py-2 bg-blue-600 text-white rounded">Add New Pump</button>
+        <button className="px-4 py-2 bg-blue-600 text-white rounded">
+          Add New Pump
+        </button>
       </div>
 
-      <div className="flex gap-4 mb-4">
+      <div className="flex gap-4 mb-4 flex-wrap">
         <input
           type="text"
           placeholder="Search by location..."
-          className="w-1/3 px-3 py-2 border rounded"
+          className="w-full sm:w-1/3 px-3 py-2 border rounded"
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
