@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { exportFuelDataToCSV } from "./exportCSV";
+import Navbar from "../Navbar/navbar";
 
 const Prices = () => {
   const [fuelData, setFuelData] = useState([
@@ -144,9 +145,7 @@ const Prices = () => {
   return (
     <div className="bg-gray-50 min-h-screen">
       <div className="bg-blue-600 text-white py-6 shadow-md">
-        <h1 className="text-center text-4xl font-extrabold tracking-wide">
-          Fuel Price Management
-        </h1>
+        <Navbar />
       </div>
 
       {feedbackMessage && (

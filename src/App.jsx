@@ -1,10 +1,10 @@
 import React from "react";
 import "./app.css";
-import InventoryPage from "./components/Invetory/Invetory";
+import Prices from "./components/Prices/Prices";
 const App = () => {
   return (
     <>
-     <InventoryPage/>
+     <Prices />
     </>
   );
 }
