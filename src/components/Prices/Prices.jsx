@@ -11,7 +11,7 @@ import {
 } from "recharts";
 import { exportFuelDataToCSV } from "./exportCSV";
 
-const Pump = () => {
+const Prices = () => {
   const [fuelData, setFuelData] = useState([
     {
       type: "Regular",
@@ -374,4 +374,4 @@ const Pump = () => {
   );
 };
 
-export default Pump;
+export default Prices;
