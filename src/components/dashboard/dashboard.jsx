@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import NavigationBar from './NavigationBar';
 import TodaysSales from './TodaysSales';
 import FuelInventory from './FuelInventory';
 import PumpStationMonitor from './PumpStationMonitor';
@@ -7,12 +6,12 @@ import SystemAlerts from './SystemAlerts';
 import RecentTransactions from './RecentTransactions';
 import FuelStationHeader from './FuelStationHeader';
 
-const App = () => {
-  const [activeTab, setActiveTab] = useState('home');
+const Dashboard = () => {
+  const [activeTab] = useState('home');
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <NavigationBar activeTab={activeTab} setActiveTab={setActiveTab} />
+      {/* NavigationBar component removed because it does not exist */}
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-6">
@@ -28,10 +27,10 @@ const App = () => {
           </div>
         )}
 
-        {activeTab === 'staff' && <StaffPage />}
+        {/* StaffPage component removed because it does not exist */}
       </div>
     </div>
   );
 };
 
-export default App;
+export default Dashboard;
