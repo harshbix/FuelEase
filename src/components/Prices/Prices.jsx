@@ -1,3 +1,4 @@
+// Full updated Prices.jsx
 import React, { useState, useEffect } from "react";
 import { Edit, Clock, CheckCircle, XCircle, Trash } from "lucide-react";
 import {
@@ -43,16 +44,6 @@ const Prices = () => {
     },
   ]);
 
-  const handleDeleteSchedule = (fuelType, idx) => {
-    setFuelData((prev) =>
-      prev.map((f) =>
-        f.type === fuelType
-          ? { ...f, scheduledChanges: f.scheduledChanges.filter((_, i) => i !== idx) }
-          : f
-      )
-    );
-  };
-
   const [selectedFuel, setSelectedFuel] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
@@ -89,7 +80,6 @@ const Prices = () => {
     }
 
     const formattedPrice = `Tsh.${newPrice}`;
-
     setFuelData((prevData) =>
       prevData.map((fuel) =>
         fuel.type === selectedFuel.type
@@ -121,7 +111,6 @@ const Prices = () => {
     }
 
     const formattedPrice = `Tsh.${newSchedule.price}`;
-
     setFuelData((prevData) =>
       prevData.map((fuel) =>
         fuel.type === selectedFuel.type
@@ -141,37 +130,50 @@ const Prices = () => {
     setTimeout(() => setFeedbackMessage(""), 3000);
   };
 
+  const handleDeleteSchedule = (fuelType, idx) => {
+    setFuelData((prev) =>
+      prev.map((f) =>
+        f.type === fuelType
+          ? {
+              ...f,
+              scheduledChanges: f.scheduledChanges.filter((_, i) => i !== idx),
+            }
+          : f
+      )
+    );
+  };
+
   return (
     <div className="bg-gray-50 min-h-screen text-sm">
-      <div className="bg-blue-600 text-white py-4 shadow-md text-sm">
+      <div className="bg-blue-600 text-white py-4 shadow-md">
         <Navbar />
       </div>
 
       {feedbackMessage && (
-        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded shadow flex items-center space-x-2 z-50">
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded shadow flex items-center gap-2 z-50">
           <CheckCircle className="w-4 h-4" />
           <span>{feedbackMessage}</span>
         </div>
       )}
 
       {errorMessage && (
-        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded shadow flex items-center space-x-2 z-50">
+        <div className="fixed top-16 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded shadow flex items-center gap-2 z-50">
           <XCircle className="w-4 h-4" />
           <span>{errorMessage}</span>
         </div>
       )}
 
       <div className="container mx-auto px-4 py-6">
-        <div className="bg-white rounded shadow p-6">
+        <div className="bg-white rounded-lg shadow p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">
+            <h2 className="text-xl font-semibold text-gray-900">
               Manage Fuel Prices
             </h2>
             <button
               onClick={() => exportFuelDataToCSV(fuelData)}
-              className="bg-blue-800 hover:bg-blue-700 text-white text-xs px-4 py-1 rounded shadow transition"
+              className="bg-blue-700 hover:bg-blue-600 text-white text-sm px-4 py-1.5 rounded shadow"
             >
-              Export
+              Export History
             </button>
           </div>
 
@@ -179,72 +181,68 @@ const Prices = () => {
             {fuelData.map((fuel, index) => (
               <div
                 key={index}
-                className="bg-gray-100 rounded shadow p-4 hover:shadow-md transition space-y-4"
+                className="bg-gray-100 rounded-lg shadow p-4 space-y-4"
               >
                 <div className="flex justify-between items-center">
-                  <h3 className="text-base font-semibold text-gray-900">
-                    {fuel.type}
-                  </h3>
-                  <div className="flex space-x-2">
+                  <h3 className="text-base font-semibold">{fuel.type}</h3>
+                  <div className="flex gap-2">
                     <button
-                      className="bg-blue-800 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded shadow flex items-center space-x-1"
                       onClick={() => handleEditPrice(fuel)}
+                      className="bg-blue-700 hover:bg-blue-600 text-white text-xs px-3 py-1 rounded flex items-center gap-1"
                     >
-                      <Edit className="w-3 h-3" />
-                      <span>Edit</span>
+                      <Edit size={14} />
+                      Edit
                     </button>
                     <button
-                      className="bg-gray-600 hover:bg-gray-500 text-white text-xs px-3 py-1 rounded shadow flex items-center space-x-1"
                       onClick={() => handleScheduleChange(fuel)}
+                      className="bg-gray-600 hover:bg-gray-500 text-white text-xs px-3 py-1 rounded flex items-center gap-1"
                     >
-                      <Clock className="w-3 h-3" />
-                      <span>Schedule</span>
+                      <Clock size={14} />
+                      Schedule
                     </button>
                   </div>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {fuel.currentPrice}
-                  </p>
+                  <p className="text-2xl font-bold">{fuel.currentPrice}</p>
                   <p className="text-xs text-gray-500">Current Price</p>
                 </div>
                 {fuel.scheduledChanges.length > 0 && (
                   <div>
-                    <h4 className="text-xs font-medium text-gray-700">
+                    <h4 className="text-xs font-medium text-gray-700 mb-1">
                       Scheduled Changes
                     </h4>
                     {fuel.scheduledChanges.slice(0, 3).map((change, idx) => (
                       <div
                         key={idx}
-                        className="flex justify-between text-xs text-gray-900"
+                        className="flex justify-between text-xs text-gray-800 items-center"
                       >
-                        <p>{change.price}</p>
-                        <p>{new Date(change.date).toLocaleString()}</p>
+                        <span>{change.price}</span>
+                        <span>{new Date(change.date).toLocaleString()}</span>
                         <button
                           onClick={() => handleDeleteSchedule(fuel.type, idx)}
                           className="text-red-500 hover:text-red-700 ml-2"
                         >
-                          <Trash size={12} />
+                          <Trash size={14} />
                         </button>
                       </div>
                     ))}
                   </div>
                 )}
                 <div>
-                  <h4 className="text-xs font-medium text-gray-700">
+                  <h4 className="text-xs font-medium text-gray-700 mb-1">
                     Price History
                   </h4>
                   {fuel.priceHistory
                     .slice(-3)
                     .reverse()
-                    .map((history, idx) => (
+                    .map((h, idx) => (
                       <div
                         key={idx}
                         className="grid grid-cols-3 text-xs text-gray-500"
                       >
-                        <p>{history.price}</p>
-                        <p>{new Date(history.date).toLocaleString()}</p>
-                        <p>{history.user}</p>
+                        <span>{h.price}</span>
+                        <span>{new Date(h.date).toLocaleString()}</span>
+                        <span>{h.user}</span>
                       </div>
                     ))}
                 </div>
@@ -253,17 +251,18 @@ const Prices = () => {
           </div>
         </div>
 
-        <div className="mt-10 bg-white rounded shadow p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+        {/* Charts */}
+        <div className="mt-10 bg-white rounded-lg shadow p-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">
             Price History Charts
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {fuelData.map((fuel, index) => (
+            {fuelData.map((fuel, idx) => (
               <div
-                key={index}
-                className="bg-blue-50 border border-blue-200 rounded shadow p-4"
+                key={idx}
+                className="bg-blue-50 border border-blue-200 rounded-lg p-4"
               >
-                <h3 className="text-base font-semibold text-gray-900 mb-2">
+                <h3 className="text-base font-medium mb-2">
                   {fuel.type} Price Chart
                 </h3>
                 <ResponsiveContainer width="100%" height={200}>
@@ -284,7 +283,7 @@ const Prices = () => {
                       dataKey="price"
                       stroke="#2563eb"
                       strokeWidth={2}
-                      dot={{ r: 2 }}
+                      dot={{ r: 3 }}
                     />
                   </LineChart>
                 </ResponsiveContainer>
@@ -292,6 +291,80 @@ const Prices = () => {
             ))}
           </div>
         </div>
+
+        {/* Edit Modal */}
+        {isEditModalOpen && (
+          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 shadow-lg w-full max-w-md">
+              <h3 className="text-base font-semibold mb-3">
+                Edit Price for {selectedFuel?.type}
+              </h3>
+              <input
+                type="text"
+                value={newPrice}
+                onChange={(e) => setNewPrice(e.target.value)}
+                className="w-full border px-3 py-2 rounded mb-4 text-sm"
+                placeholder="Enter new price"
+              />
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={() => setIsEditModalOpen(false)}
+                  className="bg-gray-500 text-white px-4 py-1.5 rounded hover:bg-gray-600"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSavePrice}
+                  className="bg-blue-700 text-white px-4 py-1.5 rounded hover:bg-blue-800"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Schedule Modal */}
+        {isScheduleModalOpen && (
+          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 shadow-lg w-full max-w-md">
+              <h3 className="text-base font-semibold mb-3">
+                Schedule Price for {selectedFuel?.type}
+              </h3>
+              <input
+                type="text"
+                value={newSchedule.price}
+                onChange={(e) =>
+                  setNewSchedule({ ...newSchedule, price: e.target.value })
+                }
+                className="w-full border px-3 py-2 rounded mb-3 text-sm"
+                placeholder="Price (numbers only)"
+              />
+              <input
+                type="datetime-local"
+                value={newSchedule.date}
+                onChange={(e) =>
+                  setNewSchedule({ ...newSchedule, date: e.target.value })
+                }
+                className="w-full border px-3 py-2 rounded mb-4 text-sm"
+              />
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={() => setIsScheduleModalOpen(false)}
+                  className="bg-gray-500 text-white px-4 py-1.5 rounded hover:bg-gray-600"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSaveSchedule}
+                  className="bg-blue-700 text-white px-4 py-1.5 rounded hover:bg-blue-800"
+                >
+                  Schedule
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
