@@ -1,10 +1,9 @@
 import React from "react";
-import "./app.css";
-import Prices from "./components/Prices/Prices";
+import "./app.css";import Navbar from "./components/Navbar/navbar";
 const App = () => {
   return (
     <>
-     <Prices />
+      <Navbar />
     </>
   );
 }
