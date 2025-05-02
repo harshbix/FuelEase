@@ -1,13 +1,13 @@
 import React from "react";
 import "./app.css";
-import Login from "./components/login/Login";
+import Pump from "./components/Prices/Prices";
 
-const App = () => {
+function App() {
   return (
     <>
-     <Login />
+     <Pump />
     </>
   );
-};
+}
 
 export default App;
