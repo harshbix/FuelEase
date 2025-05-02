@@ -1,10 +1,10 @@
 import React from "react";
 import "./app.css";
-import StaffManagement from "./StaffManagement"
+import Login  from "./components/login/Login";
 function App() {
   return (
     <>
-      <StaffManagement />
+      <Login />
     </>
   );
 }
