@@ -1,11 +1,11 @@
 import React from "react";
-import "./App.css";
+import Pump from "./components/Prices/Prices";
 
 function App() {
   return (
-   <>
-   
-  </>
+    <>
+     <Pump />
+    </>
   );
 }
 
