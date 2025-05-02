@@ -1,10 +1,10 @@
 import React from "react";
 import "./app.css";
-import StaffManagement from "./components/Staff/StaffManagement"
-function App() {
+import InventoryPage from "./components/Invetory/Invetory";
+const App = () => {
   return (
     <>
-      <StaffManagement />
+     <InventoryPage/>
     </>
   );
 }
