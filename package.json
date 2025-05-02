@@ -12,8 +12,6 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.4",
     "date-fns": "^4.1.0",
-    "framer-motion": "^12.9.0",
-    "lucide-react": "^0.503.0",
     "file-saver": "^2.0.5",
     "framer-motion": "^12.9.0",
     "lucide-react": "^0.503.0",

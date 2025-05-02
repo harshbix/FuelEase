@@ -1,11 +1,10 @@
 import React from "react";
 import "./app.css";
-import Pump from "./components/Prices/Prices";
-
+import StaffManagement from "./StaffManagement"
 function App() {
   return (
     <>
-     <Pump />
+      <StaffManagement />
     </>
   );
 }
