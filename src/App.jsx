@@ -1,6 +1,6 @@
 import React from "react";
 import "./app.css";
-import StaffManagement from "./StaffManagement"
+import StaffManagement from "./components/Staff/StaffManagement"
 function App() {
   return (
     <>
