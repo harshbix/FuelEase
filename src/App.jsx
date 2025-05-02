@@ -1,11 +1,12 @@
 import React from "react";
 import "./app.css";
-import Login from "./components/login/Login";
-
+import Sidebar from "./components/Navbar/navbar";
+import Navbar from "./components/Navbar/navbar";
+import InventoryPage from "./components/Invetory/Invetory";
 const App = () => {
   return (
     <>
-     <Login />
+     <InventoryPage/>
     </>
   );
 };
