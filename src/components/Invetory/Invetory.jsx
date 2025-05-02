@@ -194,7 +194,7 @@ export default function InventoryPage() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 toLowercase tracking-wider">Amount (L)</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 toLowecase tracking-wider">Request Time</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 toLowercase tracking-wider">Delivery Time</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 toLowercase tracking-wider">Delivery Price ($)</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 toLowercase tracking-wider">Delivery Price (Tshs)</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 toLowercase tracking-wider">Status</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 toLowercase tracking-wider">Actions</th>
                 </tr>
@@ -210,7 +210,7 @@ export default function InventoryPage() {
                         {item.status === 'Pending' ? '--' : item.deliveryTime}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {item.deliveryPrice ? `$${item.deliveryPrice}` : '-'}
+                        {item.deliveryPrice ? `Tshs${item.deliveryPrice}` : '-'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-2 py-1 text-xs font-medium rounded-full 
