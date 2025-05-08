@@ -6,6 +6,7 @@ import Prices from "./components/Prices/Prices";
 import InventoryPage from "./components/Invetory/Invetory";
 import PumpManagement from "./components/Pump/pumpManagement";
 import StaffManagement from "./components/Staff/StaffManagement";
+import { LogIn } from "lucide-react";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/Inventory" element={<InventoryPage /> } />
         <Route path="/Pump" element={<PumpManagement />} />
         <Route path="/Staff" element={<StaffManagement />} />
+        <Route path="/login" element={<LogIn />} />
       </Routes>
     </Router>
   );
