@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Navbar from "../Navbar/navbar";
 
 const fuelData = [
   { type: "Petrol", percent: 82, capacity: 10000, alert: 2000, color: "bg-green-600" },
@@ -13,7 +12,7 @@ const deliveryData = [
   { type: "Premium", amount: 3000, date: "2024-01-27 11:00", status: "Pending" },
 ];
 
-export default function InventoryPage() {
+ function InventoryPage() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredDeliveries = deliveryData.filter(delivery =>
@@ -120,3 +119,6 @@ export default function InventoryPage() {
     </div>
   );
 }
+
+
+export default InventoryPage
