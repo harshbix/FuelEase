@@ -14,7 +14,7 @@ const NotFound = () => {
                 Oops! The page you're looking for doesn't exist. Maybe it's hiding from you!
             </p>
             <Link
-                to="/"
+                to="/Prices" //link to prices for now before production
                 className="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 transition-transform transform hover:scale-105"
             >
                 <FaHome className="text-xl" />

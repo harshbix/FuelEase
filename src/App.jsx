@@ -10,7 +10,7 @@ const App = () => {
       <Routes>
         {/* Catch-all route for 404 */}
         <Route path="*" element={<NotFound />} />
-        <Route path="/" element={<Prices />} />
+        <Route path="/Prices" element={<Prices />} />
       </Routes>
     </Router>
   );
