@@ -6,7 +6,7 @@ import InventoryPage from "./components/Invetory/Invetory";
 const App = () => {
   return (
     <>
-     <InventoryPage/>
+     <Navbar/>
     </>
   );
 };
