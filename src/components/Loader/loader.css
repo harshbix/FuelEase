@@ -1,0 +1,19 @@
+/* HTML: <div class="loader"></div> */
+.loader {
+    width: 28px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #F10C49;
+    animation: l7 2s infinite;
+  }
+  @keyframes l7 {
+    0%,
+    100%  {transform:translate(-30px,-30px);box-shadow:  0     0 #F4DD51, 0     0 #E3AAD6}
+    12.5% {transform:translate( 30px,-30px);box-shadow: -15px  0 #F4DD51,-30px  0 #E3AAD6}
+    25%   {transform:translate( 30px,-30px);box-shadow:  0     0 #F4DD51, 0     0 #E3AAD6}
+    37.5% {transform:translate( 30px, 30px);box-shadow:  0 -15px #F4DD51, 0 -30px #E3AAD6}
+    50%   {transform:translate( 30px, 30px);box-shadow:  0     0 #F4DD51, 0     0 #E3AAD6}
+    62.5% {transform:translate(-30px, 30px);box-shadow:  15px  0 #F4DD51, 30px  0 #E3AAD6}
+    75%   {transform:translate(-30px, 30px);box-shadow:  0     0 #F4DD51, 0     0 #E3AAD6}
+    87.5% {transform:translate(-30px,-30px);box-shadow:  0  15px #F4DD51, 0  30px #E3AAD6}
+  }
