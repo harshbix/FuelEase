@@ -146,7 +146,6 @@ const Prices = () => {
   return (
     <div className="bg-gray-50 min-h-screen text-sm">
       <div className="bg-blue-600 text-white py-4 shadow-md">
-        <Navbar />
       </div>
 
       {feedbackMessage && (
