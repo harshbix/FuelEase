@@ -7,6 +7,7 @@ import InventoryPage from "./components/Invetory/Invetory";
 import PumpManagement from "./components/Pump/pumpManagement";
 import StaffManagement from "./components/Staff/StaffManagement";
 import Login from "./components/login/Login";
+import Dashboard from "./components/dashboard/dashboard";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
       <Routes>
         {/* Catch-all route for 404 */}
         <Route path="*" element={<NotFound />} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="/Prices" element={<Prices />} />
         <Route path="/Inventory" element={<InventoryPage /> } />
         <Route path="/Pump" element={<PumpManagement />} />
