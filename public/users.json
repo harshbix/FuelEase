@@ -1,0 +1,19 @@
+[
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com",
+      "password": "123456",
+      "role": "Manager",
+      "notifications": ["Inventory low", "Price update pending"]
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "email": "jane@example.com",
+      "password": "password123",
+      "role": "Supervisor",
+      "notifications": ["Staff shift pending approval"]
+    }
+  ]
+  
