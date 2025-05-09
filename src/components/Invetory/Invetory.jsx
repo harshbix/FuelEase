@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Navbar from "../Navbar/navbar";
 
 const fuelData = [
   { type: "Petrol", percent: 82, capacity: 10000, alert: 2000, color: "bg-green-600" },
@@ -40,7 +39,7 @@ const deliveryData = [
   },
 ];
 
-function InventoryPage() {
+ function InventoryPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -422,4 +421,5 @@ function InventoryPage() {
   );
 }
 
-export default InventoryPage;
+
+export default InventoryPage
