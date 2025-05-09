@@ -176,8 +176,8 @@ function PumpManagement() {
   };
 
   return (
-    <div className="p-4 md:p-8 space-y-6 max-w-screen-xl mx-auto">
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+    <div className="py-8 px-3 space-y-6">
+      <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Pump Management</h1>
         <button
           onClick={() => setIsModalOpen(true)}
