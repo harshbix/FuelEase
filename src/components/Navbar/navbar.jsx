@@ -1,119 +1,243 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { UserCircle2, Bell, Settings, LogOut } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { FiMenu, FiX, FiUser, FiSettings, FiLogOut, FiBell } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
-  const location = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("profile");
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const navigate = useNavigate();
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [user, setUser] = useState(null);
+  const menuButtonRef = useRef(null);
+  const profileRef = useRef(null);
+  const mobileMenuRef = useRef(null);
+
+  const defaultUser = {
+    name: "Guest User",
+    email: "guest@example.com",
+    position: "Visitor",
+    contacts: "",
+    profileImage: null,
+  };
+
+  const [userProfile, setUserProfile] = useState({
+    name: "John Smith",
+    email: "john@fuelease.com",
+    position: "Manager",
+    contacts: "+1234567890",
+    profileImage: null,
+  });
+
+  const [editProfile, setEditProfile] = useState({ ...userProfile });
 
   useEffect(() => {
-    const stored = localStorage.getItem("userProfile");
-    if (stored) {
-      setUser(JSON.parse(stored));
-    }
-  }, []);
+    const handleClickOutside = (e) => {
+      if (isProfileOpen && profileRef.current && !profileRef.current.contains(e.target)) {
+        setIsProfileOpen(false);
+      }
+      if (isMenuOpen && mobileMenuRef.current && !mobileMenuRef.current.contains(e.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isProfileOpen, isMenuOpen]);
 
-  if (location.pathname === "/login") return null;
+  useEffect(() => {
+    setEditProfile({ ...userProfile });
+  }, [userProfile]);
 
-  const navItems = [
-    { name: "Home", path: "/" },
-    { name: "Pump", path: "/pump" },
-    { name: "Transactions", path: "/transactions" },
-    { name: "Inventory", path: "/inventory" },
-    { name: "Fuel Price", path: "/Prices" },
-    { name: "Staff", path: "/staff" },
-    { name: "Report", path: "/report" },
-  ];
+  const handleSave = () => {
+    setUserProfile({ ...editProfile });
+    setActiveTab("profile");
+  };
 
   const handleLogout = () => {
-    localStorage.clear();
+    setUserProfile(defaultUser);
+    setIsLoggedIn(false);
+    setIsProfileOpen(false);
     navigate("/login");
   };
 
+  const getInitials = (name) =>
+    name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
+
+  const navLinks = [
+    { name: "Home", to: "/" },
+    { name: "Pump", to: "/Pump" },
+    { name: "Inventory", to: "/Inventory" },
+    { name: "Fuel Price", to: "/Prices" },
+    { name: "Staff", to: "/Staff" },
+    { name: "Report", to: "/Report" },
+  ];
+
   return (
-    <motion.nav
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.4 }}
-      className="w-full bg-white shadow z-40 fixed top-0 left-0 px-6 py-3 flex justify-between items-center"
-    >
-      {/* Logo or Brand */}
-      <div className="text-xl font-bold text-blue-800 tracking-tight">
-        FuelEase
-      </div>
+    <nav className="bg-white text-gray-800 shadow-md fixed top-0 w-full z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16 items-center">
+          <div className="text-xl font-bold text-blue-700">FuelEase</div>
 
-      {/* Navigation Links */}
-      <div className="hidden md:flex space-x-6">
-        {navItems.map((item) => {
-          const isActive = location.pathname === item.path;
-          return (
-            <Link
-              key={item.name}
-              to={item.path}
-              className={`px-3 py-2 rounded-lg font-medium transition-colors ${
-                isActive
-                  ? "bg-blue-100 text-blue-800"
-                  : "text-gray-700 hover:bg-gray-100 hover:text-blue-700"
-              }`}
+          <div className="hidden md:flex space-x-6">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.name}
+                to={link.to}
+                className={({ isActive }) =>
+                  `px-3 py-2 rounded-lg font-medium transition duration-200 ${
+                    isActive
+                      ? "bg-blue-600 text-white shadow"
+                      : "text-gray-700 hover:bg-blue-100"
+                  }`
+                }
+              >
+                {link.name}
+              </NavLink>
+            ))}
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <button
+              ref={menuButtonRef}
+              className="md:hidden text-gray-700 hover:text-gray-900"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              {item.name}
-            </Link>
-          );
-        })}
-      </div>
+              {isMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+            </button>
 
-      {/* Profile + Dropdown */}
-      <div className="relative">
-        <button
-          className="flex items-center space-x-2 focus:outline-none"
-          onClick={() => setShowDropdown((prev) => !prev)}
-        >
-          <UserCircle2 className="w-8 h-8 text-blue-800" />
-        </button>
+            <button
+              onClick={() => {
+                setIsProfileOpen(!isProfileOpen);
+                setActiveTab("profile");
+              }}
+              className="relative"
+            >
+              {userProfile.profileImage ? (
+                <img
+                  src={userProfile.profileImage}
+                  alt="User"
+                  className="w-8 h-8 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm">
+                  {getInitials(userProfile.name)}
+                </div>
+              )}
+            </button>
 
-        {showDropdown && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="absolute right-0 mt-2 w-60 bg-white border border-gray-200 shadow-lg rounded-lg z-50"
-          >
-            <div className="px-4 py-3 border-b border-gray-200">
-              <h3 className="text-sm font-semibold text-gray-800">{user?.name}</h3>
-              <p className="text-sm text-gray-500">{user?.position}</p>
-              <p className="text-xs text-gray-400">{user?.email}</p>
-              <p className="text-xs text-gray-400">{user?.contacts}</p>
-            </div>
-
-            <ul className="text-sm divide-y divide-gray-100">
-              <li>
-                <button className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100">
-                  <Settings className="w-4 h-4 mr-2" />
-                  Settings
-                </button>
-              </li>
-              <li>
-                <button className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100">
-                  <Bell className="w-4 h-4 mr-2" />
-                  Notifications
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={handleLogout}
-                  className="w-full flex items-center px-4 py-3 text-red-600 hover:bg-red-50"
+            <AnimatePresence>
+              {isProfileOpen && (
+                <motion.div
+                  ref={profileRef}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="absolute right-4 top-16 w-72 bg-white shadow-xl rounded-lg z-50 overflow-hidden"
                 >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Logout
-                </button>
-              </li>
-            </ul>
-          </motion.div>
-        )}
+                  <div className="flex border-b">
+                    {["profile", "settings", "notifications"].map((tab) => (
+                      <button
+                        key={tab}
+                        onClick={() => setActiveTab(tab)}
+                        className={`flex-1 text-sm font-semibold py-2 ${
+                          activeTab === tab
+                            ? "bg-blue-100 text-blue-700"
+                            : "hover:bg-gray-100"
+                        }`}
+                      >
+                        {tab[0].toUpperCase() + tab.slice(1)}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="p-4 text-sm space-y-2">
+                    {activeTab === "profile" && (
+                      <>
+                        <p className="font-semibold">{userProfile.name}</p>
+                        <p className="text-gray-600">{userProfile.position}</p>
+                        <p>Email: {userProfile.email}</p>
+                        <p>Contact: {userProfile.contacts || "N/A"}</p>
+                      </>
+                    )}
+
+                    {activeTab === "settings" && (
+                      <div className="space-y-2">
+                        {["name", "email", "position", "contacts"].map((field) => (
+                          <input
+                            key={field}
+                            type="text"
+                            name={field}
+                            value={editProfile[field]}
+                            onChange={(e) =>
+                              setEditProfile({ ...editProfile, [field]: e.target.value })
+                            }
+                            className="w-full border rounded px-2 py-1"
+                            placeholder={field}
+                          />
+                        ))}
+                        <div className="flex justify-between pt-2">
+                          <button
+                            onClick={() => setActiveTab("profile")}
+                            className="text-gray-600 hover:text-gray-900"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            onClick={handleSave}
+                            className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {activeTab === "notifications" && (
+                      <div>
+                        <p className="text-gray-600">No new notifications.</p>
+                      </div>
+                    )}
+                  </div>
+
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 border-t"
+                  >
+                    <FiLogOut className="inline mr-2" /> Sign Out
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
       </div>
-    </motion.nav>
+
+      {isMenuOpen && (
+        <div
+          ref={mobileMenuRef}
+          className="md:hidden fixed top-16 right-4 w-48 bg-white rounded-lg shadow-lg z-40"
+        >
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.name}
+              to={link.to}
+              className={({ isActive }) =>
+                `block px-4 py-2 text-sm ${
+                  isActive ? "bg-blue-100 text-blue-700" : "text-gray-700 hover:bg-gray-100"
+                }`
+              }
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {link.name}
+            </NavLink>
+          ))}
+        </div>
+      )}
+    </nav>
   );
 };
 
