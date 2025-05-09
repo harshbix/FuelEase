@@ -16,6 +16,7 @@ import StaffManagement from "./components/Staff/StaffManagement";
 import Login from "./components/login/Login";
 import Dashboard from "./components/dashboard/dashboard";
 import Navbar from "./components/Navbar/navbar";
+import PrivateRoute from "./components/privateRoute";
 
 const PageWrapper = ({ children }) => (
   <motion.div
@@ -30,10 +31,10 @@ const PageWrapper = ({ children }) => (
 
 const AppContent = () => {
   const location = useLocation();
-  const hideNavbar = location.pathname === "/login";
+  const isLoginPage = location.pathname === "/login";
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    // Update the document title based on the current route
     const routeTitles = {
       "/": "Dashboard - FuelEase",
       "/Prices": "Prices - FuelEase",
@@ -48,16 +49,51 @@ const AppContent = () => {
 
   return (
     <>
-      {!hideNavbar && <Navbar />}
-      <div className={`pt-16 ${!hideNavbar ? "max-w-7xl mx-auto px-4" : ""}`}>
+      {!isLoginPage && user && <Navbar />}
+      <div className={`${!isLoginPage && user ? "pt-16 max-w-7xl mx-auto px-4" : ""}`}>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<PageWrapper><Dashboard /></PageWrapper>} />
-            <Route path="/Prices" element={<PageWrapper><Prices /></PageWrapper>} />
-            <Route path="/Inventory" element={<PageWrapper><InventoryPage /></PageWrapper>} />
-            <Route path="/Pump" element={<PageWrapper><PumpManagement /></PageWrapper>} />
-            <Route path="/Staff" element={<PageWrapper><StaffManagement /></PageWrapper>} />
             <Route path="/login" element={<Login />} />
+            <Route
+              path="/"
+              element={
+                <PrivateRoute>
+                  <PageWrapper><Dashboard /></PageWrapper>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/Prices"
+              element={
+                <PrivateRoute>
+                  <PageWrapper><Prices /></PageWrapper>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/Inventory"
+              element={
+                <PrivateRoute>
+                  <PageWrapper><InventoryPage /></PageWrapper>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/Pump"
+              element={
+                <PrivateRoute>
+                  <PageWrapper><PumpManagement /></PageWrapper>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/Staff"
+              element={
+                <PrivateRoute>
+                  <PageWrapper><StaffManagement /></PageWrapper>
+                </PrivateRoute>
+              }
+            />
             <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
           </Routes>
         </AnimatePresence>
