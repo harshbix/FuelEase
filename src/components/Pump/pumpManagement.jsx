@@ -7,7 +7,7 @@ const columns = [
   {
     name: "Fuel Types",
     cell: row => (
-      <div className="flex gap-1">
+      <div className="flex gap-1 flex-wrap">
         {row.fuelTypes.map((type, idx) => (
           <button
             key={idx}
@@ -33,9 +33,7 @@ const columns = [
     name: "Health",
     cell: row => (
       <div className="flex items-center gap-1">
-        <span
-          className={`${dotColor[row.health]} w-2 h-2 rounded-full inline-block`}
-        ></span>
+        <span className={`${dotColor[row.health]} w-2 h-2 rounded-full inline-block`}></span>
         <span className={`font-semibold ${healthColor[row.health]}`}>
           {row.health}
         </span>
@@ -60,7 +58,7 @@ const columns = [
   },
 ];
 
-const pumpsData = [
+const initialPumpsData = [
   {
     pumpNumber: "P001",
     location: "North Bay",
@@ -112,25 +110,79 @@ const dotColor = {
 };
 
 function PumpManagement() {
+  const [pumpList, setPumpList] = useState(initialPumpsData);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [locationFilter, setLocationFilter] = useState("All");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [pumpForm, setPumpForm] = useState({
+    pumpNumber: "",
+    location: "",
+    fuelTypes: "",
+    flowRate: "",
+    assignment: "",
+    status: "Active",
+    health: "OK",
+    lastMaintenance: "",
+  });
 
-  const filteredData = pumpsData.filter(pump => {
+  const filteredData = pumpList.filter(pump => {
     const searchLower = search.toLowerCase();
     const matchesLocation = pump.location.toLowerCase().includes(searchLower);
     const matchesStatus = statusFilter === "All" || pump.status === statusFilter;
-    const matchesLocationFilter =
-      locationFilter === "All" || pump.location === locationFilter;
-
+    const matchesLocationFilter = locationFilter === "All" || pump.location === locationFilter;
     return matchesLocation && matchesStatus && matchesLocationFilter;
   });
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setPumpForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!pumpForm.pumpNumber.trim()) newErrors.pumpNumber = "Pump number is required";
+    if (!pumpForm.location.trim()) newErrors.location = "Location is required";
+    if (!pumpForm.fuelTypes.trim()) newErrors.fuelTypes = "At least one fuel type is required";
+    if (!/^\d+(\.\d+)?( L\/min)?$/.test(pumpForm.flowRate.trim())) newErrors.flowRate = "Invalid flow rate";
+    if (!pumpForm.assignment.trim()) newErrors.assignment = "Assignment is required";
+    if (!pumpForm.lastMaintenance.trim()) newErrors.lastMaintenance = "Maintenance date is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSavePump = () => {
+    if (!validateForm()) return;
+
+    const newPumpEntry = {
+      ...pumpForm,
+      fuelTypes: pumpForm.fuelTypes.split(",").map(type => type.trim()),
+    };
+
+    setPumpList(prev => [...prev, newPumpEntry]);
+    setIsModalOpen(false);
+    setPumpForm({
+      pumpNumber: "",
+      location: "",
+      fuelTypes: "",
+      flowRate: "",
+      assignment: "",
+      status: "Active",
+      health: "OK",
+      lastMaintenance: "",
+    });
+    setErrors({});
+  };
+
   return (
-    <div className="p-8 space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="p-4 md:p-8 space-y-6 max-w-screen-xl mx-auto">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
         <h1 className="text-2xl font-bold">Pump Management</h1>
-        <button className="px-4 py-2 bg-blue-600 text-white rounded">
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="px-4 py-2 bg-blue-600 text-white rounded"
+        >
           Add New Pump
         </button>
       </div>
@@ -139,7 +191,7 @@ function PumpManagement() {
         <input
           type="text"
           placeholder="Search by location..."
-          className="w-full sm:w-1/3 px-3 py-2 border rounded"
+          className="flex-1 min-w-[200px] px-3 py-2 border rounded"
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
@@ -165,16 +217,61 @@ function PumpManagement() {
         </select>
       </div>
 
-      <DataTable
-        columns={columns}
-        data={filteredData}
-        pagination
-        highlightOnHover
-        striped
-      />
+      <div className="overflow-x-auto">
+        <DataTable
+          columns={columns}
+          data={filteredData}
+          pagination
+          highlightOnHover
+          striped
+          responsive
+        />
+      </div>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-50">
+          <div className="bg-white/90 p-6 rounded-lg w-full max-w-md shadow-lg relative">
+            <h2 className="text-xl font-bold mb-4">Add New Pump</h2>
+            <form className="space-y-3">
+              {Object.entries(pumpForm).map(([key, value]) => (
+                key !== 'status' && key !== 'health' && (
+                  <div key={key}>
+                    <input
+                      type={key === 'lastMaintenance' ? 'date' : 'text'}
+                      name={key}
+                      placeholder={
+                        key === 'fuelTypes'
+                          ? 'Fuel Types (comma separated)'
+                          : key.charAt(0).toUpperCase() + key.slice(1)
+                      }
+                      className={`w-full px-3 py-2 border rounded ${errors[key] ? 'border-red-500' : ''}`}
+                      value={value}
+                      onChange={handleInputChange}
+                    />
+                    {errors[key] && (
+                      <p className="text-red-500 text-sm mt-1">{errors[key]}</p>
+                    )}
+                  </div>
+                )
+              ))}
+            </form>
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-2 right-2 text-gray-500 hover:text-black"
+            >
+              ✕
+            </button>
+            <button
+              onClick={handleSavePump}
+              className="mt-4 w-full py-2 bg-blue-600 text-white rounded"
+            >
+              Save Pump
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-
-export default PumpManagement
+export default PumpManagement;
