@@ -8,39 +8,39 @@ const fuelData = [
 ];
 
 const deliveryData = [
-  { 
+  {
     id: 1,
-    type: "Petrol", 
-    amount: 5000, 
+    type: "Petrol",
+    amount: 5000,
     requestTime: "2024-01-24 10:30",
     deliveryTime: "2024-01-25 09:00",
-    status: "Scheduled", 
-    deliveryPrice: 150, 
-    deliveryLocation: "123 Main St" 
+    status: "Scheduled",
+    deliveryPrice: 150,
+    deliveryLocation: "123 Main St"
   },
-  { 
+  {
     id: 2,
-    type: "Diesel", 
-    amount: 4000, 
+    type: "Diesel",
+    amount: 4000,
     requestTime: "2024-01-25 08:15",
-    deliveryTime: "2024-01-26 14:30", 
-    status: "Scheduled", 
-    deliveryPrice: 120, 
-    deliveryLocation: "456 Oak Ave" 
+    deliveryTime: "2024-01-26 14:30",
+    status: "Scheduled",
+    deliveryPrice: 120,
+    deliveryLocation: "456 Oak Ave"
   },
-  { 
+  {
     id: 3,
-    type: "Premium", 
-    amount: 3000, 
+    type: "Premium",
+    amount: 3000,
     requestTime: "2024-01-26 13:45",
-    deliveryTime: "", 
-    status: "Pending", 
-    deliveryPrice: 0, 
-    deliveryLocation: "" 
+    deliveryTime: "",
+    status: "Pending",
+    deliveryPrice: 0,
+    deliveryLocation: ""
   },
 ];
 
-export default function InventoryPage() {
+function InventoryPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -76,7 +76,7 @@ export default function InventoryPage() {
       }
       return delivery;
     });
-    
+
     setDeliveries(updatedDeliveries);
     setShowModal(false);
     setSelectedOrder(null);
@@ -123,7 +123,7 @@ export default function InventoryPage() {
         {/* Header with Schedule Delivery button */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-3xl font-bold text-gray-900">Inventory Management</h2>
-          <button 
+          <button
             className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg transition-colors"
             onClick={() => {
               setShowModal(true);
@@ -214,7 +214,7 @@ export default function InventoryPage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-2 py-1 text-xs font-medium rounded-full 
-                          ${item.status === 'Scheduled' ? 'bg-green-100 text-green-800' : 
+                          ${item.status === 'Scheduled' ? 'bg-green-100 text-green-800' :
                             'bg-yellow-100 text-yellow-800'}`}>
                           {item.status}
                         </span>
@@ -258,7 +258,7 @@ export default function InventoryPage() {
             <h3 className="text-xl font-semibold mb-4">
               {isEditing ? 'Edit Delivery' : 'Schedule Delivery'}
             </h3>
-            
+
             {/* Select Pending Order (only shown when not editing) */}
             {!isEditing && (
               <div className="mb-4">
@@ -278,8 +278,8 @@ export default function InventoryPage() {
                 >
                   <option value="">Select an order</option>
                   {pendingOrders.map((order, index) => (
-                    <option 
-                      key={index} 
+                    <option
+                      key={index}
                       value={`${order.type}-${order.amount}`}
                     >
                       {order.type} - {order.amount}L - {order.requestTime}
@@ -421,3 +421,5 @@ export default function InventoryPage() {
     </div>
   );
 }
+
+export default InventoryPage;
