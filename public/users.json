@@ -1,19 +1,17 @@
 [
     {
-      "id": 1,
-      "name": "John Doe",
-      "email": "john@example.com",
-      "password": "123456",
-      "role": "Manager",
-      "notifications": ["Inventory low", "Price update pending"]
+      "email": "john@fuelease.com",
+      "password": "password123",
+      "name": "John Smith",
+      "position": "Manager",
+      "contacts": "+1234567890"
     },
     {
-      "id": 2,
-      "name": "Jane Smith",
-      "email": "jane@example.com",
-      "password": "password123",
-      "role": "Supervisor",
-      "notifications": ["Staff shift pending approval"]
+      "email": "jane@fuelease.com",
+      "password": "password456",
+      "name": "Jane Doe",
+      "position": "Clerk",
+      "contacts": "+9876543210"
     }
   ]
   

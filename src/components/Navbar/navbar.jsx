@@ -7,15 +7,8 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [userProfile, setUserProfile] = useState({
-    name: "John Smith",
-    email: "john@fuelease.com",
-    position: "Manager",
-    contacts: "+1234567890",
-    profileImage: null,
-  });
-  const [editProfile, setEditProfile] = useState({ ...userProfile });
+  const [userProfile, setUserProfile] = useState(null);
+  const [editProfile, setEditProfile] = useState(null);
 
   const navigate = useNavigate();
   const menuButtonRef = useRef(null);
@@ -32,6 +25,28 @@ const Navbar = () => {
   ];
 
   useEffect(() => {
+    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
+    const profile = JSON.parse(localStorage.getItem("userProfile"));
+
+    if (loggedIn && profile?.email) {
+      fetch("/users.json")
+        .then(res => res.json())
+        .then(users => {
+          const matchedUser = users.find(u => u.email === profile.email);
+          if (matchedUser) {
+            setUserProfile(matchedUser);
+            setEditProfile({ ...matchedUser });
+          } else {
+            setUserProfile(profile); // fallback if not found in file
+            setEditProfile({ ...profile });
+          }
+        });
+    } else {
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  useEffect(() => {
     const handleClickOutside = (e) => {
       if (isProfileOpen && profileRef.current && !profileRef.current.contains(e.target)) {
         setIsProfileOpen(false);
@@ -44,25 +59,14 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isProfileOpen, isMenuOpen]);
 
-  useEffect(() => {
-    setEditProfile({ ...userProfile });
-  }, [userProfile]);
-
   const handleSave = () => {
     setUserProfile({ ...editProfile });
     setActiveTab("profile");
   };
 
   const handleLogout = () => {
-    setUserProfile({
-      name: "Guest User",
-      email: "guest@example.com",
-      position: "Visitor",
-      contacts: "",
-      profileImage: null,
-    });
-    setIsLoggedIn(false);
-    setIsProfileOpen(false);
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userProfile");
     navigate("/login");
   };
 
@@ -75,7 +79,7 @@ const Navbar = () => {
 
   const ProfileDropdown = () => (
     <AnimatePresence>
-      {isProfileOpen && (
+      {isProfileOpen && userProfile && (
         <motion.div
           ref={profileRef}
           initial={{ opacity: 0, y: -10 }}
@@ -178,6 +182,8 @@ const Navbar = () => {
       ))}
     </div>
   );
+
+  if (!userProfile) return null;
 
   return (
     <nav className="bg-white text-gray-800 shadow-md fixed top-0 w-full z-50">

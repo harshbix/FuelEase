@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const dummyUser = {
-  email: "john@fuelease.com",
-  password: "password123",
-  name: "John Smith",
-  position: "Manager",
-  contacts: "+1234567890",
-};
-
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +13,7 @@ const Login = () => {
 
   const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const newErrors = {};
     setSuccessMessage("");
 
@@ -39,17 +31,26 @@ const Login = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      if (!isSignIn) {
-        if (email === dummyUser.email && password === dummyUser.password) {
+      try {
+        const response = await fetch("/users.json");
+        const users = await response.json();
+
+        const foundUser = users.find(
+          (user) => user.email === email && user.password === password
+        );
+
+        if (foundUser) {
           localStorage.setItem("isLoggedIn", "true");
-          localStorage.setItem("userProfile", JSON.stringify(dummyUser));
+          localStorage.setItem("userProfile", JSON.stringify(foundUser));
           setSuccessMessage("Signed in successfully!");
-          setTimeout(() => navigate("/"), 1500);
+          setTimeout(() => {
+            navigate("/", { replace: true });
+          }, 500); // 0.5s
         } else {
           setErrors({ password: "Invalid credentials." });
         }
-      } else {
-        setSuccessMessage("Signed up successfully!");
+      } catch (error) {
+        setErrors({ email: "Failed to fetch users." });
       }
     }
   };
@@ -69,7 +70,7 @@ const Login = () => {
         </div>
       )}
 
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="flex items-center justify-center min-h-screen bg-gray-100 overflow-hidden">
         <div className="w-[400px] bg-white rounded-2xl shadow-lg p-6">
           <h2 className="text-2xl font-semibold text-center text-blue-800 mb-6">
             FuelEase Station Manager

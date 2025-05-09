@@ -5,7 +5,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  useLocation
+  useLocation,
 } from "react-router-dom";
 
 import NotFound from "./components/NotFound";
@@ -31,8 +31,7 @@ const PageWrapper = ({ children }) => (
 
 const AppContent = () => {
   const location = useLocation();
-  const isLoginPage = location.pathname === "/login";
-  const user = JSON.parse(localStorage.getItem("user"));
+  const hideNavbar = location.pathname === "/login";
 
   useEffect(() => {
     const routeTitles = {
@@ -49,16 +48,17 @@ const AppContent = () => {
 
   return (
     <>
-      {!isLoginPage && user && <Navbar />}
-      <div className={`${!isLoginPage && user ? "pt-16 max-w-7xl mx-auto px-4" : ""}`}>
+      {!hideNavbar && <Navbar />}
+      <div className={`pt-16 ${!hideNavbar ? "max-w-7xl mx-auto px-4" : ""}`}>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
-            <Route path="/login" element={<Login />} />
             <Route
               path="/"
               element={
                 <PrivateRoute>
-                  <PageWrapper><Dashboard /></PageWrapper>
+                  <PageWrapper>
+                    <Dashboard />
+                  </PageWrapper>
                 </PrivateRoute>
               }
             />
@@ -66,7 +66,9 @@ const AppContent = () => {
               path="/Prices"
               element={
                 <PrivateRoute>
-                  <PageWrapper><Prices /></PageWrapper>
+                  <PageWrapper>
+                    <Prices />
+                  </PageWrapper>
                 </PrivateRoute>
               }
             />
@@ -74,7 +76,9 @@ const AppContent = () => {
               path="/Inventory"
               element={
                 <PrivateRoute>
-                  <PageWrapper><InventoryPage /></PageWrapper>
+                  <PageWrapper>
+                    <InventoryPage />
+                  </PageWrapper>
                 </PrivateRoute>
               }
             />
@@ -82,7 +86,9 @@ const AppContent = () => {
               path="/Pump"
               element={
                 <PrivateRoute>
-                  <PageWrapper><PumpManagement /></PageWrapper>
+                  <PageWrapper>
+                    <PumpManagement />
+                  </PageWrapper>
                 </PrivateRoute>
               }
             />
@@ -90,11 +96,21 @@ const AppContent = () => {
               path="/Staff"
               element={
                 <PrivateRoute>
-                  <PageWrapper><StaffManagement /></PageWrapper>
+                  <PageWrapper>
+                    <StaffManagement />
+                  </PageWrapper>
                 </PrivateRoute>
               }
             />
-            <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="*"
+              element={
+                <PageWrapper>
+                  <NotFound />
+                </PageWrapper>
+              }
+            />
           </Routes>
         </AnimatePresence>
       </div>
