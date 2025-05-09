@@ -118,7 +118,7 @@ const deliveryData = [
   return (
     <div className="relative">
       {/* Main content with conditional blur */}
-      <div className={`p-6 bg-gray-50 min-h-screen pt-24 ${showModal || showDeleteModal ? 'blur-sm' : ''}`}>
+      <div className={`px-3 bg-gray-50 pt-10 ${showModal || showDeleteModal ? 'blur-sm' : ''}`}>
         {/* Header with Schedule Delivery button */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-3xl font-bold text-gray-900">Inventory Management</h2>

@@ -151,7 +151,7 @@ const StaffManagement = () => {
   const totalDepartments = new Set(staffData.map((s) => s.department)).size;
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="py-8 px-3 bg-gray-50">
       <h1 className="text-2xl font-bold mb-6">Staff Management</h1>
 
       {/* Stats */}
