@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./app.css";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -31,6 +31,20 @@ const PageWrapper = ({ children }) => (
 const AppContent = () => {
   const location = useLocation();
   const hideNavbar = location.pathname === "/login";
+
+  useEffect(() => {
+    // Update the document title based on the current route
+    const routeTitles = {
+      "/": "Dashboard - FuelEase",
+      "/Prices": "Prices - FuelEase",
+      "/Inventory": "Inventory - FuelEase",
+      "/Pump": "Pump Management - FuelEase",
+      "/Staff": "Staff Management - FuelEase",
+      "/login": "Login - FuelEase",
+    };
+
+    document.title = routeTitles[location.pathname] || "Not Found - FuelEase";
+  }, [location.pathname]);
 
   return (
     <>
