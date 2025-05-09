@@ -13,7 +13,7 @@
     "@tailwindcss/vite": "^4.1.4",
     "date-fns": "^4.1.0",
     "file-saver": "^2.0.5",
-    "framer-motion": "^12.9.0",
+    "framer-motion": "^12.10.5",
     "icons": "^1.0.0",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.503.0",
