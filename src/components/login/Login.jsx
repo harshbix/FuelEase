@@ -5,13 +5,31 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [isSignIn, setIsSignIn] = useState(false);
+    const [errors, setErrors] = useState({});
+
+    const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
 
     const handleSubmit = () => {
-        if (isSignIn && password !== confirmPassword) {
-            alert("Passwords do not match!");
-            return;
+        const newErrors = {};
+
+        if (!email) newErrors.email = "Email is required.";
+        else if (!isValidEmail(email)) newErrors.email = "Please enter a valid email.";
+
+        if (!password) newErrors.password = "Password is required.";
+        else if (password.length < 6)
+            newErrors.password = "Password must be at least 6 characters.";
+
+        if (isSignIn) {
+            if (!confirmPassword) newErrors.confirmPassword = "Please confirm your password.";
+            else if (password !== confirmPassword)
+                newErrors.confirmPassword = "Passwords do not match.";
         }
-        alert(isSignIn ? "Signed up successfully!" : "Logged in successfully!");
+
+        setErrors(newErrors);
+
+        if (Object.keys(newErrors).length === 0) {
+            alert(isSignIn ? "Signed up successfully!" : "Logged in successfully!");
+        }
     };
 
     return (
@@ -21,7 +39,6 @@ const Login = () => {
                     FuelEase Station Manager
                 </h1>
 
-                
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                         Email
@@ -33,9 +50,9 @@ const Login = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
+                    {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                 </div>
 
-                
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                         Password
@@ -47,9 +64,9 @@ const Login = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
+                    {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
                 </div>
 
-                
                 {isSignIn && (
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -62,10 +79,12 @@ const Login = () => {
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
                         />
+                        {errors.confirmPassword && (
+                            <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+                        )}
                     </div>
                 )}
 
-                
                 {!isSignIn && (
                     <div className="flex items-center justify-between mb-6">
                         <label className="flex items-center text-sm text-gray-700">
@@ -90,7 +109,10 @@ const Login = () => {
 
                 <button
                     className="w-full h-12 bg-gray-200 text-gray-800 rounded-sm hover:bg-gray-300 transition mt-4"
-                    onClick={() => setIsSignIn(!isSignIn)}
+                    onClick={() => {
+                        setIsSignIn(!isSignIn);
+                        setErrors({});
+                    }}
                 >
                     {isSignIn ? "Back to Login" : "Create an Account"}
                 </button>
