@@ -6,19 +6,32 @@ const columns = [
   { name: "Location", selector: row => row.location, sortable: true },
   {
     name: "Fuel Types",
-    cell: row => (
-      <div className="flex gap-1">
-        {row.fuelTypes.map((type, idx) => (
-          <button
-            key={idx}
-            className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs font-semibold"
-          >
-            {type}
-          </button>
-        ))}
-      </div>
-    ),
-  },
+    cell: row => {
+      // Split into chunks of 2
+      const chunkedTypes = [];
+      for (let i = 0; i < row.fuelTypes.length; i += 2) {
+        chunkedTypes.push(row.fuelTypes.slice(i, i + 2));
+      }
+  
+      return (
+        <div className="flex flex-col gap-1">
+          {chunkedTypes.map((group, idx) => (
+            <div key={idx} className="flex gap-1 flex-row flex-nowrap">
+              {group.map((type, j) => (
+                <button
+                  key={j}
+                  className="bg-blue-100 text-blue-800 rounded-1 text-xs font-semibold"
+                >
+                  {type}
+                </button>
+              ))}
+            </div>
+          ))}
+        </div>
+      );
+    }
+  }
+  ,
   { name: "Flow Rate", selector: row => row.flowRate },
   { name: "Assignment", selector: row => row.assignment },
   {
@@ -47,10 +60,10 @@ const columns = [
     name: "Actions",
     cell: () => (
       <div className="w-full flex flex-col sm:flex-row gap-2">
-        <button className="flex-1 min-w-[100px] px-3 py-2 border rounded bg-blue-500 text-white text-sm">
+        <button className="flex-1 min-w-[80px] px-2 py-1 border rounded bg-blue-500 text-white text-xs">
           Edit
         </button>
-        <button className="flex-1 min-w-[100px] px-3 py-2 border rounded bg-gray-500 text-white text-sm">
+        <button className="flex-1 min-w-[80px] px-2 py-1 border rounded bg-gray-500 text-white text-xs">
           Maintenance
         </button>
       </div>
