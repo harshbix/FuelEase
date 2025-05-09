@@ -1,3 +1,4 @@
+// the recent transactions component
 import React from 'react';
 
 const RecentTransactions = () => {

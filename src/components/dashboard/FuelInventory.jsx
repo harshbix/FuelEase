@@ -1,3 +1,4 @@
+ /* fuel inventory components */
 import React from 'react';
 
 const FuelInventory = () => {
