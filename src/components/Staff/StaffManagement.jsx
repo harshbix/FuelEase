@@ -93,14 +93,6 @@ const StaffManagement = () => {
       name: "Employee",
       selector: (row) => (
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-            <span className="text-sm font-bold">
-              {row.name
-                .split(" ")
-                .map((n) => n[0])
-                .join("")}
-            </span>
-          </div>
           <div>
             <p className="font-semibold">{row.name}</p>
             <p className="text-sm text-gray-500">{row.email}</p>

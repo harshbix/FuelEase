@@ -143,10 +143,9 @@ const Prices = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen text-sm">
+    <div className="bg-gray-50 min-h-screen text-sm overflow-y-hidden">
       <div >
       </div>
-
       {feedbackMessage && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded shadow flex items-center gap-2 z-50">
           <CheckCircle className="w-4 h-4" />
