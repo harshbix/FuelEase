@@ -1,133 +1,74 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 
-const columns = [
-  { name: "Pump Number", selector: row => row.pumpNumber, sortable: true },
-  { name: "Location", selector: row => row.location, sortable: true },
-  {
-    name: "Fuel Types",
-    cell: row => {
-      // Split into chunks of 2
-      const chunkedTypes = [];
-      for (let i = 0; i < row.fuelTypes.length; i += 2) {
-        chunkedTypes.push(row.fuelTypes.slice(i, i + 2));
-      }
-  
-      return (
-        <div className="flex flex-col gap-1">
-          {chunkedTypes.map((group, idx) => (
-            <div key={idx} className="flex gap-1 flex-row flex-nowrap">
-              {group.map((type, j) => (
-                <button
-                  key={j}
-                  className="bg-blue-100 text-blue-800 rounded-1 text-xs font-semibold"
-                >
-                  {type}
-                </button>
-              ))}
-            </div>
-          ))}
-        </div>
-      );
-    }
-  }
-  ,
-  { name: "Flow Rate", selector: row => row.flowRate },
-  { name: "Assignment", selector: row => row.assignment },
-  {
-    name: "Status",
-    cell: row => (
-      <span className={`font-semibold ${statusColor[row.status]}`}>
-        {row.status}
-      </span>
-    ),
-  },
-  {
-    name: "Health",
-    cell: row => (
-      <div className="flex items-center gap-1">
-        <span className={`${dotColor[row.health]} w-2 h-2 rounded-full inline-block`}></span>
-        <span className={`font-semibold ${healthColor[row.health]}`}>
-          {row.health}
-        </span>
-      </div>
-    ),
-  },
-  { name: "Last Maintenance", selector: row => row.lastMaintenance },
-  {
-    name: "Actions",
-    cell: () => (
-      <div className="w-full flex flex-col sm:flex-row gap-2">
-        <button className="flex-1 min-w-[80px] px-2 py-1 border rounded bg-blue-500 text-white text-xs">
-          Edit
-        </button>
-        <button className="flex-1 min-w-[80px] px-2 py-1 border rounded bg-gray-500 text-white text-xs">
-          Maintenance
-        </button>
-      </div>
-    ),
-    grow: 2,
-    wrap: true,
-  },
-];
+const PumpManagement = () => {
+  const initialPumpsData = [
+    {
+      pumpNumber: "P001",
+      location: "North Bay",
+      fuelTypes: ["Petrol", "Diesel"],
+      flowRate: "40 L/min",
+      assignment: "Bay 1",
+      status: "Active",
+      health: "OK",
+      lastMaintenance: "2024-01-15",
+    },
+    {
+      pumpNumber: "P002",
+      location: "South Bay",
+      fuelTypes: ["Premium"],
+      flowRate: "35 L/min",
+      assignment: "Bay 2",
+      status: "Maintenance",
+      health: "Warning",
+      lastMaintenance: "2023-12-20",
+    },
+    {
+      pumpNumber: "P003",
+      location: "East Wing",
+      fuelTypes: ["Petrol", "Premium"],
+      flowRate: "0 L/min",
+      assignment: "Bay 3",
+      status: "Disabled",
+      health: "Faulty",
+      lastMaintenance: "2023-11-30",
+    },
+  ];
 
-const initialPumpsData = [
-  {
-    pumpNumber: "P001",
-    location: "North Bay",
-    fuelTypes: ["Petrol", "Diesel"],
-    flowRate: "40 L/min",
-    assignment: "Bay 1",
-    status: "Active",
-    health: "OK",
-    lastMaintenance: "2024-01-15",
-  },
-  {
-    pumpNumber: "P002",
-    location: "South Bay",
-    fuelTypes: ["Premium"],
-    flowRate: "35 L/min",
-    assignment: "Bay 2",
-    status: "Maintenance",
-    health: "Warning",
-    lastMaintenance: "2023-12-20",
-  },
-  {
-    pumpNumber: "P003",
-    location: "East Wing",
-    fuelTypes: ["Petrol", "Premium"],
-    flowRate: "0 L/min",
-    assignment: "Bay 3",
-    status: "Disabled",
-    health: "Faulty",
-    lastMaintenance: "2023-11-30",
-  },
-];
+  const statusColor = {
+    Active: "text-green-600",
+    Maintenance: "text-yellow-600",
+    Disabled: "text-red-600",
+  };
 
-const statusColor = {
-  Active: "text-green-600",
-  Maintenance: "text-yellow-600",
-  Disabled: "text-red-600",
-};
+  const healthColor = {
+    OK: "text-green-600",
+    Warning: "text-yellow-600",
+    Faulty: "text-red-600",
+  };
 
-const healthColor = {
-  OK: "text-green-600",
-  Warning: "text-yellow-600",
-  Faulty: "text-red-600",
-};
+  const dotColor = {
+    OK: "bg-green-500",
+    Warning: "bg-yellow-500",
+    Faulty: "bg-red-500",
+  };
 
-const dotColor = {
-  OK: "bg-green-500",
-  Warning: "bg-yellow-500",
-  Faulty: "bg-red-500",
-};
-
-function PumpManagement() {
   const [pumpList, setPumpList] = useState(initialPumpsData);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [locationFilter, setLocationFilter] = useState("All");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(null);
+  const [toastMessage, setToastMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    if (showToast) {
+      const timeout = setTimeout(() => setShowToast(false), 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [showToast]);
+
   const [errors, setErrors] = useState({});
   const [pumpForm, setPumpForm] = useState({
     pumpNumber: "",
@@ -173,7 +114,17 @@ function PumpManagement() {
       fuelTypes: pumpForm.fuelTypes.split(",").map(type => type.trim()),
     };
 
-    setPumpList(prev => [...prev, newPumpEntry]);
+    if (isEditing !== null) {
+      const updatedList = [...pumpList];
+      updatedList[isEditing] = newPumpEntry;
+      setPumpList(updatedList);
+      setToastMessage("Pump updated successfully!");
+    } else {
+      setPumpList(prev => [...prev, newPumpEntry]);
+      setToastMessage("New pump added successfully!");
+    }
+
+    setShowToast(true);
     setIsModalOpen(false);
     setPumpForm({
       pumpNumber: "",
@@ -186,7 +137,84 @@ function PumpManagement() {
       lastMaintenance: "",
     });
     setErrors({});
+    setIsEditing(null);
   };
+
+  const handleEdit = (index) => {
+    const pump = pumpList[index];
+    setPumpForm({
+      ...pump,
+      fuelTypes: pump.fuelTypes.join(", ")
+    });
+    setIsEditing(index);
+    setIsModalOpen(true);
+  };
+
+  const toggleMaintenanceStatus = (index) => {
+    const updatedList = [...pumpList];
+    const pump = updatedList[index];
+    pump.status = pump.status === "Maintenance" ? "Active" : "Maintenance";
+    updatedList[index] = pump;
+    setPumpList(updatedList);
+  };
+
+  const columns = [
+    { name: "Pump Number", selector: row => row.pumpNumber, sortable: true },
+    { name: "Location", selector: row => row.location, sortable: true },
+    {
+      name: "Fuel Types",
+      cell: row => (
+        <div className="flex flex-col gap-1">
+          {[...Array(Math.ceil(row.fuelTypes.length / 2))].map((_, idx) => (
+            <div key={idx} className="flex gap-1">
+              {row.fuelTypes.slice(idx * 2, idx * 2 + 2).map((type, j) => (
+                <button key={j} className="bg-blue-100 text-blue-800 rounded-1 text-xs font-semibold">
+                  {type}
+                </button>
+              ))}
+            </div>
+          ))}
+        </div>
+      )
+    },
+    { name: "Flow Rate", selector: row => row.flowRate },
+    { name: "Assignment", selector: row => row.assignment },
+    {
+      name: "Status",
+      cell: row => <span className={`font-semibold ${statusColor[row.status]}`}>{row.status}</span>
+    },
+    {
+      name: "Health",
+      cell: row => (
+        <div className="flex items-center gap-1">
+          <span className={`${dotColor[row.health]} w-2 h-2 rounded-full inline-block`}></span>
+          <span className={`font-semibold ${healthColor[row.health]}`}>{row.health}</span>
+        </div>
+      )
+    },
+    { name: "Last Maintenance", selector: row => row.lastMaintenance },
+    {
+      name: "Actions",
+      cell: (row, index) => (
+        <div className="flex flex-col sm:flex-row gap-2">
+          <button
+            onClick={() => handleEdit(index)}
+            className="px-2 py-1 bg-blue-500 text-white text-xs rounded"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => toggleMaintenanceStatus(index)}
+            className="px-2 py-1 bg-gray-600 text-white text-xs rounded"
+          >
+            {row.status === "Maintenance" ? "Activate" : "Maintenance"}
+          </button>
+        </div>
+      ),
+      grow: 2,
+      wrap: true,
+    },
+  ];
 
   return (
     <div className="py-8 px-3 space-y-6">
@@ -244,7 +272,7 @@ function PumpManagement() {
       {isModalOpen && (
         <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-50">
           <div className="bg-white/90 p-6 rounded-lg w-full max-w-md shadow-lg relative">
-            <h2 className="text-xl font-bold mb-4">Add New Pump</h2>
+            <h2 className="text-xl font-bold mb-4">{isEditing !== null ? "Edit Pump" : "Add New Pump"}</h2>
             <form className="space-y-3">
               {Object.entries(pumpForm).map(([key, value]) => (
                 key !== 'status' && key !== 'health' && (
@@ -252,18 +280,12 @@ function PumpManagement() {
                     <input
                       type={key === 'lastMaintenance' ? 'date' : 'text'}
                       name={key}
-                      placeholder={
-                        key === 'fuelTypes'
-                          ? 'Fuel Types (comma separated)'
-                          : key.charAt(0).toUpperCase() + key.slice(1)
-                      }
+                      placeholder={key === 'fuelTypes' ? 'Fuel Types (comma separated)' : key.charAt(0).toUpperCase() + key.slice(1)}
                       className={`w-full px-3 py-2 border rounded ${errors[key] ? 'border-red-500' : ''}`}
                       value={value}
                       onChange={handleInputChange}
                     />
-                    {errors[key] && (
-                      <p className="text-red-500 text-sm mt-1">{errors[key]}</p>
-                    )}
+                    {errors[key] && <p className="text-red-500 text-sm mt-1">{errors[key]}</p>}
                   </div>
                 )
               ))}
@@ -271,9 +293,7 @@ function PumpManagement() {
             <button
               onClick={() => setIsModalOpen(false)}
               className="absolute top-2 right-2 text-gray-500 hover:text-black"
-            >
-              ✕
-            </button>
+            >✕</button>
             <button
               onClick={handleSavePump}
               className="mt-4 w-full py-2 bg-blue-600 text-white rounded"
@@ -283,8 +303,14 @@ function PumpManagement() {
           </div>
         </div>
       )}
+
+      {showToast && (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-[9999]">
+          {toastMessage}
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default PumpManagement;
