@@ -1,26 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
-import { FiMenu, FiX, FiUser, FiSettings, FiLogOut, FiLogIn } from "react-icons/fi";
+import { FiMenu, FiX, FiUser, FiSettings, FiLogOut, FiBell } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [activeProfileTab, setActiveProfileTab] = useState("profile");
+  const [activeTab, setActiveTab] = useState("profile");
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-
-  const menuButtonRef = useRef(null);
-  const mobileMenuRef = useRef(null);
-  const profileRef = useRef(null);
-
   const navigate = useNavigate();
-  const location = useLocation();
+  const menuButtonRef = useRef(null);
+  const profileRef = useRef(null);
+  const mobileMenuRef = useRef(null);
 
-  const defaultUserProfile = {
+  const defaultUser = {
     name: "Guest User",
     email: "guest@example.com",
     position: "Visitor",
     contacts: "",
-    profileImage: null
+    profileImage: null,
   };
 
   const [userProfile, setUserProfile] = useState({
@@ -28,91 +26,46 @@ const Navbar = () => {
     email: "john@fuelease.com",
     position: "Manager",
     contacts: "+1234567890",
-    profileImage: null
+    profileImage: null,
   });
 
   const [editProfile, setEditProfile] = useState({ ...userProfile });
 
   useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (isProfileOpen && profileRef.current && !profileRef.current.contains(e.target)) {
+        setIsProfileOpen(false);
+      }
+      if (isMenuOpen && mobileMenuRef.current && !mobileMenuRef.current.contains(e.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isProfileOpen, isMenuOpen]);
+
+  useEffect(() => {
     setEditProfile({ ...userProfile });
   }, [userProfile]);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        isMenuOpen &&
-        mobileMenuRef.current &&
-        !mobileMenuRef.current.contains(event.target) &&
-        menuButtonRef.current &&
-        !menuButtonRef.current.contains(event.target)
-      ) {
-        setIsMenuOpen(false);
-      }
+  const handleSave = () => {
+    setUserProfile({ ...editProfile });
+    setActiveTab("profile");
+  };
 
-      if (
-        isProfileOpen &&
-        profileRef.current &&
-        !profileRef.current.contains(event.target)
-      ) {
-        setIsProfileOpen(false);
-      }
-    };
+  const handleLogout = () => {
+    setUserProfile(defaultUser);
+    setIsLoggedIn(false);
+    setIsProfileOpen(false);
+    navigate("/login");
+  };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isMenuOpen, isProfileOpen]);
-
-  const getInitials = (name) => {
-    if (!name) return "";
-    return name
+  const getInitials = (name) =>
+    name
       .split(" ")
       .map((n) => n[0])
       .join("")
       .toUpperCase();
-  };
-
-  const toggleMenu = (e) => {
-    e.stopPropagation();
-    setIsMenuOpen(!isMenuOpen);
-    if (isProfileOpen) setIsProfileOpen(false);
-  };
-
-  const toggleProfile = (e) => {
-    e.stopPropagation();
-    setIsProfileOpen(!isProfileOpen);
-    setActiveProfileTab("profile");
-    if (isMenuOpen) setIsMenuOpen(false);
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditProfile((prev) => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleSaveProfile = (e) => {
-    e.stopPropagation();
-    setUserProfile({ ...editProfile });
-    setActiveProfileTab("profile");
-  };
-
-  const handleProfileAction = (e, action) => {
-    e.stopPropagation();
-    if (action === "logout") {
-      setUserProfile(defaultUserProfile);
-      setIsLoggedIn(false);
-      setIsProfileOpen(false);
-      navigate("/login");
-      return;
-    }
-    if (action === "login") {
-      navigate("/login");
-      return;
-    }
-    setActiveProfileTab(action);
-  };
 
   const navLinks = [
     { name: "Home", to: "/" },
@@ -120,25 +73,25 @@ const Navbar = () => {
     { name: "Inventory", to: "/Inventory" },
     { name: "Fuel Price", to: "/Prices" },
     { name: "Staff", to: "/Staff" },
-    { name: "Report", to: "/Report" }
+    { name: "Report", to: "/Report" },
   ];
 
   return (
-    <nav className="bg-gray-200 text-white shadow-lg fixed w-full top-0 z-50">
+    <nav className="bg-white text-gray-800 shadow-md fixed top-0 w-full z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex-shrink-0">
-            <span className="text-xl font-bold text-gray-900">FuelEase</span>
-          </div>
+        <div className="flex justify-between h-16 items-center">
+          <div className="text-xl font-bold text-blue-700">FuelEase</div>
 
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex space-x-6">
             {navLinks.map((link) => (
               <NavLink
                 key={link.name}
                 to={link.to}
                 className={({ isActive }) =>
-                  `px-3 py-2 rounded-md text-sm font-medium text-gray-900 ${
-                    isActive ? "bg-gray-400" : "hover:bg-gray-300"
+                  `px-3 py-2 rounded-lg font-medium transition duration-200 ${
+                    isActive
+                      ? "bg-blue-600 text-white shadow"
+                      : "text-gray-700 hover:bg-blue-100"
                   }`
                 }
               >
@@ -150,150 +103,131 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             <button
               ref={menuButtonRef}
-              className="md:hidden text-gray-900 hover:text-gray-700 focus:outline-none"
-              onClick={toggleMenu}
-              aria-label="Toggle menu"
+              className="md:hidden text-gray-700 hover:text-gray-900"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
             </button>
 
-            <div className="relative">
-              <button onClick={toggleProfile} className="flex items-center focus:outline-none">
-                {isLoggedIn ? (
-                  userProfile.profileImage ? (
-                    <img
-                      src={userProfile.profileImage}
-                      alt="Profile"
-                      className="w-8 h-8 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-medium">
-                      {getInitials(userProfile.name)}
-                    </div>
-                  )
-                ) : (
-                  <div className="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs font-medium">
-                    <FiUser size={16} />
-                  </div>
-                )}
-              </button>
-
-              {isProfileOpen && (
-                <div
-                  ref={profileRef}
-                  className="absolute right-0 mt-2 w-64 bg-gray-200 rounded-md shadow-lg py-1 z-50"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {isLoggedIn ? (
-                    <>
-                      {activeProfileTab === "profile" ? (
-                        <>
-                          <div className="px-4 py-3 border-b border-gray-300">
-                            <p className="text-sm font-medium text-gray-900">{userProfile.name}</p>
-                            <p className="text-xs text-gray-600">{userProfile.position}</p>
-                          </div>
-                          <div className="px-4 py-2 text-sm text-gray-900">
-                            Email: {userProfile.email}
-                          </div>
-                          <div className="px-4 py-2 text-sm text-gray-900">
-                            Contact: {userProfile.contacts || "N/A"}
-                          </div>
-                          <button
-                            className="w-full text-left flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            onClick={(e) => handleProfileAction(e, "settings")}
-                          >
-                            <FiSettings className="mr-2" /> Settings
-                          </button>
-                        </>
-                      ) : (
-                        <>
-                          {/* Settings / Edit Mode */}
-                          <div className="p-4 space-y-3">
-                            <input
-                              type="text"
-                              name="name"
-                              value={editProfile.name}
-                              onChange={handleInputChange}
-                              className="w-full px-3 py-2 text-sm border border-gray-300 rounded"
-                              placeholder="Name"
-                            />
-                            <input
-                              type="email"
-                              name="email"
-                              value={editProfile.email}
-                              onChange={handleInputChange}
-                              className="w-full px-3 py-2 text-sm border border-gray-300 rounded"
-                              placeholder="Email"
-                            />
-                            <input
-                              type="text"
-                              name="position"
-                              value={editProfile.position}
-                              onChange={handleInputChange}
-                              className="w-full px-3 py-2 text-sm border border-gray-300 rounded"
-                              placeholder="Position"
-                            />
-                            <input
-                              type="text"
-                              name="contacts"
-                              value={editProfile.contacts}
-                              onChange={handleInputChange}
-                              className="w-full px-3 py-2 text-sm border border-gray-300 rounded"
-                              placeholder="Contacts"
-                            />
-                            <div className="flex justify-between">
-                              <button
-                                onClick={() => setActiveProfileTab("profile")}
-                                className="text-sm px-4 py-2 text-gray-700 hover:bg-gray-100"
-                              >
-                                Cancel
-                              </button>
-                              <button
-                                onClick={handleSaveProfile}
-                                className="text-sm px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                              >
-                                Save
-                              </button>
-                            </div>
-                          </div>
-                        </>
-                      )}
-                      <button
-                        className="w-full text-left flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-t border-gray-300"
-                        onClick={(e) => handleProfileAction(e, "logout")}
-                      >
-                        <FiLogOut className="mr-2" /> Sign out
-                      </button>
-                    </>
-                  ) : (
-                    <button
-                      className="w-full text-left flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={(e) => handleProfileAction(e, "login")}
-                    >
-                      <FiLogIn className="mr-2" /> Login
-                    </button>
-                  )}
+            <button
+              onClick={() => {
+                setIsProfileOpen(!isProfileOpen);
+                setActiveTab("profile");
+              }}
+              className="relative"
+            >
+              {userProfile.profileImage ? (
+                <img
+                  src={userProfile.profileImage}
+                  alt="User"
+                  className="w-8 h-8 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm">
+                  {getInitials(userProfile.name)}
                 </div>
               )}
-            </div>
+            </button>
+
+            <AnimatePresence>
+              {isProfileOpen && (
+                <motion.div
+                  ref={profileRef}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="absolute right-4 top-16 w-72 bg-white shadow-xl rounded-lg z-50 overflow-hidden"
+                >
+                  <div className="flex border-b">
+                    {["profile", "settings", "notifications"].map((tab) => (
+                      <button
+                        key={tab}
+                        onClick={() => setActiveTab(tab)}
+                        className={`flex-1 text-sm font-semibold py-2 ${
+                          activeTab === tab
+                            ? "bg-blue-100 text-blue-700"
+                            : "hover:bg-gray-100"
+                        }`}
+                      >
+                        {tab[0].toUpperCase() + tab.slice(1)}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="p-4 text-sm space-y-2">
+                    {activeTab === "profile" && (
+                      <>
+                        <p className="font-semibold">{userProfile.name}</p>
+                        <p className="text-gray-600">{userProfile.position}</p>
+                        <p>Email: {userProfile.email}</p>
+                        <p>Contact: {userProfile.contacts || "N/A"}</p>
+                      </>
+                    )}
+
+                    {activeTab === "settings" && (
+                      <div className="space-y-2">
+                        {["name", "email", "position", "contacts"].map((field) => (
+                          <input
+                            key={field}
+                            type="text"
+                            name={field}
+                            value={editProfile[field]}
+                            onChange={(e) =>
+                              setEditProfile({ ...editProfile, [field]: e.target.value })
+                            }
+                            className="w-full border rounded px-2 py-1"
+                            placeholder={field}
+                          />
+                        ))}
+                        <div className="flex justify-between pt-2">
+                          <button
+                            onClick={() => setActiveTab("profile")}
+                            className="text-gray-600 hover:text-gray-900"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            onClick={handleSave}
+                            className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {activeTab === "notifications" && (
+                      <div>
+                        <p className="text-gray-600">No new notifications.</p>
+                      </div>
+                    )}
+                  </div>
+
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 border-t"
+                  >
+                    <FiLogOut className="inline mr-2" /> Sign Out
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </div>
 
-      {/* Mobile menu */}
       {isMenuOpen && (
         <div
           ref={mobileMenuRef}
-          className="md:hidden fixed right-4 top-16 w-48 bg-gray-200 rounded-md shadow-lg py-1 z-50"
-          onClick={(e) => e.stopPropagation()}
+          className="md:hidden fixed top-16 right-4 w-48 bg-white rounded-lg shadow-lg z-40"
         >
           {navLinks.map((link) => (
             <NavLink
               key={link.name}
               to={link.to}
               className={({ isActive }) =>
-                `block px-4 py-2 text-sm font-medium ${
-                  isActive ? "bg-gray-300 text-gray-900" : "text-gray-700 hover:bg-gray-100"
+                `block px-4 py-2 text-sm ${
+                  isActive ? "bg-blue-100 text-blue-700" : "text-gray-700 hover:bg-gray-100"
                 }`
               }
               onClick={() => setIsMenuOpen(false)}

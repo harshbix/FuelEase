@@ -1,6 +1,13 @@
 import React from "react";
 import "./app.css";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation
+} from "react-router-dom";
+
 import NotFound from "./components/NotFound";
 import Prices from "./components/Prices/Prices";
 import InventoryPage from "./components/Invetory/Invetory";
@@ -8,7 +15,18 @@ import PumpManagement from "./components/Pump/pumpManagement";
 import StaffManagement from "./components/Staff/StaffManagement";
 import Login from "./components/login/Login";
 import Dashboard from "./components/dashboard/dashboard";
-import Navbar from "./components/Navbar/navbar"; // <-- Import it
+import Navbar from "./components/Navbar/navbar";
+
+const PageWrapper = ({ children }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 15 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -15 }}
+    transition={{ duration: 0.3 }}
+  >
+    {children}
+  </motion.div>
+);
 
 const AppContent = () => {
   const location = useLocation();
@@ -18,15 +36,17 @@ const AppContent = () => {
     <>
       {!hideNavbar && <Navbar />}
       <div className={`pt-16 ${!hideNavbar ? "max-w-7xl mx-auto px-4" : ""}`}>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/Prices" element={<Prices />} />
-          <Route path="/Inventory" element={<InventoryPage />} />
-          <Route path="/Pump" element={<PumpManagement />} />
-          <Route path="/Staff" element={<StaffManagement />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<PageWrapper><Dashboard /></PageWrapper>} />
+            <Route path="/Prices" element={<PageWrapper><Prices /></PageWrapper>} />
+            <Route path="/Inventory" element={<PageWrapper><InventoryPage /></PageWrapper>} />
+            <Route path="/Pump" element={<PageWrapper><PumpManagement /></PageWrapper>} />
+            <Route path="/Staff" element={<PageWrapper><StaffManagement /></PageWrapper>} />
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
+          </Routes>
+        </AnimatePresence>
       </div>
     </>
   );
