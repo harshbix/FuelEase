@@ -118,7 +118,7 @@ const deliveryData = [
   return (
     <div className="relative">
       {/* Main content with conditional blur */}
-      <div className={`p-6 bg-gray-200 min-h-screen pt-24 ${showModal || showDeleteModal ? 'blur-sm' : ''}`}>
+      <div className={`p-6 bg-gray-50 min-h-screen pt-24 ${showModal || showDeleteModal ? 'blur-sm' : ''}`}>
         {/* Header with Schedule Delivery button */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-3xl font-bold text-gray-900">Inventory Management</h2>
@@ -251,7 +251,7 @@ const deliveryData = [
 
       {/* Schedule/Edit Modal */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="fixed bg-black/40 inset-0 flex items-center justify-center z-50">
           {/* Modal Content */}
           <div className="bg-gray-100 p-6 rounded-lg shadow-xl w-full max-w-md">
             <h3 className="text-xl font-semibold mb-4">
@@ -396,7 +396,7 @@ const deliveryData = [
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="fixed bg-black/40 inset-0 flex items-center justify-center z-50">
           <div className="bg-gray-100 p-6 rounded-lg shadow-xl w-full max-w-md">
             <h3 className="text-xl font-semibold mb-4">Confirm Deletion</h3>
             <p className="mb-6">Are you sure you want to delete this delivery order?</p>
