@@ -15,7 +15,7 @@ const Login = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="flex items-center justify-center min-h-screen bg-gray-200">
             <div className="w-[400px] bg-white rounded-lg shadow-md p-6">
                 <h1 className="text-2xl font-medium text-gray-900 mb-4 text-center">
                     FuelEase Station Manager

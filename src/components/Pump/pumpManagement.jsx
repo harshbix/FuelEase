@@ -111,7 +111,7 @@ const dotColor = {
   Faulty: "bg-red-500",
 };
 
-export default function PumpManagement() {
+function PumpManagement() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [locationFilter, setLocationFilter] = useState("All");
@@ -175,3 +175,6 @@ export default function PumpManagement() {
     </div>
   );
 }
+
+
+export default PumpManagement
