@@ -8,7 +8,6 @@ import PumpManagement from "./components/Pump/pumpManagement";
 import StaffManagement from "./components/Staff/StaffManagement";
 import Login from "./components/login/Login";
 import Dashboard from "./components/dashboard/dashboard";
-import ReportPage from "./components/report/reportspage";
 
 const App = () => {
   return (
@@ -22,7 +21,6 @@ const App = () => {
         <Route path="/Pump" element={<PumpManagement />} />
         <Route path="/Staff" element={<StaffManagement />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/report" element={<ReportPage />} />
       </Routes>
     </Router>
   );
