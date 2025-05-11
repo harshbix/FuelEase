@@ -18,6 +18,7 @@
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.503.0",
     "papaparse": "^5.5.2",
+    "prop-types": "^15.8.1",
     "react": "^19.1.0",
     "react-data-table-component": "^7.7.0",
     "react-dom": "^19.0.0",
