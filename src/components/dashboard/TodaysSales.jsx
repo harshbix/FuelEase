@@ -9,7 +9,7 @@ const TodaysSales = () => {
         <i className="fas fa-chart-line text-blue-500"></i>
       </div>
       <div className="mb-2">
-        <p className="text-3xl font-bold text-gray-800">Tsh 12,575,000/=</p>
+        <p className="text-3xl font-bold text-gray-800">$12,456.78</p>
         <p className="text-sm text-green-500">+15% from yesterday</p>
       </div>
     </div>
