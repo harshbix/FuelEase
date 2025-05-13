@@ -27,7 +27,7 @@ function Modal({ isOpen, onClose, title, children }) {
         <div className="fixed inset-0 bg-black bg-opacity-30 transition-opacity" onClick={onClose} />
         
         <div 
-          className="inline-block w-full max-w-5xl p-6 my-8 text-left align-middle transition-all transform bg-white shadow-xl rounded-lg"
+          className="inline-block w-full max-w-5xl p-6 my-8 text-left align-middle transition-all transform bg-white shadow-2xl rounded-lg"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex justify-between items-center pb-4 border-b border-gray-200 mb-4">

@@ -10,6 +10,7 @@ import Login from "./components/login/Login";
 import Dashboard from "./components/dashboard/dashboard";
 import ReportPage from "./components/report page/components/ReportPage";
 import { reportsData } from "./components/report page/data/reportsData";
+import Navbar from "./components/Navbar/navbar.jsx";
 
 const App = () => {
   const [dateRange, setDateRange] = useState({
@@ -19,23 +20,28 @@ const App = () => {
 
   return (
     <Router>
-      <Routes>
-        {/* Catch-all route for 404 */}
-        <Route path="*" element={<NotFound />} />
-        <Route 
-          path="/" 
-          element={<ReportPage data={reportsData} dateRange={dateRange} setDateRange={setDateRange} />} 
-        />
-        <Route 
-          path="/reportpage" 
-          element={<ReportPage data={reportsData} dateRange={dateRange} setDateRange={setDateRange} />} 
-        />
-        <Route path="/Prices" element={<Prices />} />
-        <Route path="/Inventory" element={<InventoryPage /> } />
-        <Route path="/Pump" element={<PumpManagement />} />
-        <Route path="/Staff" element={<StaffManagement />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
+      <Navbar />
+      <div style={{ paddingTop: '4rem' }}>
+        <Routes>
+          {/* Catch-all route for 404 */}
+          <Route path="*" element={<NotFound />} />
+          <Route 
+            path="/" 
+            element={<ReportPage data={reportsData} dateRange={dateRange} setDateRange={setDateRange} />} 
+          />
+          <Route 
+            path="/reportpage" 
+            element={<ReportPage data={reportsData} dateRange={dateRange} setDateRange={setDateRange} />} 
+          />
+          <Route path="/Prices" element={<Prices />} />
+          <Route path="/Inventory" element={<InventoryPage /> } />
+          <Route path="/Pump" element={<PumpManagement />} />
+          <Route path="/Staff" element={<StaffManagement />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/home" element={<Dashboard />} />
+          <Route path="/transactions" element={<NotFound />} />
+        </Routes>
+      </div>
     </Router>
   );
 };
