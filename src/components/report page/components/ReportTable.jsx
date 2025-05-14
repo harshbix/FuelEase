@@ -99,34 +99,22 @@ function ReportTable({ report }) {
         </div>
         
         <div className="flex items-center gap-2">
-          <button className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">
-            <Filter className="h-4 w-4" />
-            Filter
+          <button 
+            className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200"
+            title="Export CSV"
+            onClick={() => handleExport('csv')}
+          >
+            <Download className="h-4 w-4" />
+            CSV
           </button>
-          
-          <div className="relative group">
-            <button className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">
-              <Download className="h-4 w-4" />
-              Export
-            </button>
-            
-            <div className="absolute right-0 z-10 mt-2 hidden bg-white border border-gray-200 rounded-md shadow-lg group-hover:block">
-              <div className="py-1">
-                <button 
-                  onClick={() => handleExport('csv')}
-                  className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
-                >
-                  CSV
-                </button>
-                <button 
-                  onClick={() => handleExport('pdf')}
-                  className="block w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
-                >
-                  PDF
-                </button>
-              </div>
-            </div>
-          </div>
+          <button 
+            className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200"
+            title="Export PDF"
+            onClick={() => handleExport('pdf')}
+          >
+            <Download className="h-4 w-4" />
+            PDF
+          </button>
         </div>
       </div>
       

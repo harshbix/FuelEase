@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { X, Download } from 'lucide-react';
+import { X } from 'lucide-react';
 import { reportsData } from '../data/reportsData';
 import ReportTable from './ReportTable';
 
@@ -43,22 +43,15 @@ function Modal({ isOpen, onClose, reportId }) {
         >
           <div className="flex justify-between items-center pb-4 border-b border-gray-200 mb-4">
             <h3 id="modal-title" className="text-xl font-semibold text-gray-900">{title} Report</h3>
-            <div className="flex space-x-2">
-              <button 
-                className="p-1.5 rounded-md hover:bg-gray-100 text-gray-600 transition-colors"
-                title="Export Report"
-                onClick={() => alert('Export clicked')}
-              >
-                <Download className="h-5 w-5" />
-              </button>
-              <button 
-                onClick={onClose}
-                className="p-1.5 rounded-md hover:bg-gray-100 text-gray-600 transition-colors"
-                title="Close"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
+          <div className="flex space-x-2">
+            <button 
+              onClick={onClose}
+              className="p-1.5 rounded-md hover:bg-gray-100 text-gray-600 transition-colors"
+              title="Close"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
           </div>
 
           <ReportTable report={report} />

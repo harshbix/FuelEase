@@ -3,7 +3,7 @@ import {
   ArrowUpRight, 
   Download, 
   Bell, 
-  Clock
+  List
 } from 'lucide-react';
 import Modal from './Modal';
 import ReportTable from './ReportTable';
@@ -109,11 +109,11 @@ function ReportCard({ report }) {
         
         <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
           <button
-            onClick={() => console.log('View changelog')}
+            onClick={() => setIsModalOpen(true)}
             className="flex items-center text-xs text-gray-500 hover:text-blue-500"
           >
-            <Clock className="h-3 w-3 mr-1" />
-            View change log
+            <List className="h-3 w-3 mr-1" />
+            View all data
           </button>
           <span className="text-xs text-gray-400">Last updated: {report.lastUpdated}</span>
         </div>
