@@ -29,16 +29,16 @@ function Modal({ isOpen, onClose, reportId }) {
   const { title } = report;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto" onClick={onClose}>
+    <div className="fixed inset-0 z-50">
       <div className="flex items-center justify-center min-h-screen px-4 text-center">
-        <div className="fixed inset-0 bg-transparent transition-opacity" onClick={onClose} />
+        <div className="fixed inset-0 bg-transparent transition-opacity pointer-events-none" onClick={onClose} />
         
         <div 
           tabIndex={0}
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-title"
-          className="inline-block w-full max-w-4xl max-h-[80vh] p-6 my-8 text-left align-middle transition-all transform bg-white text-gray-900 shadow-lg rounded-lg border border-gray-300 overflow-auto focus:outline-none"
+          className="inline-block w-full max-w-4xl max-h-[80vh] p-6 my-8 text-left align-middle transition-all transform bg-white text-gray-900 shadow-lg rounded-lg border border-gray-300 overflow-auto focus:outline-none pointer-events-auto"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex justify-between items-center pb-4 border-b border-gray-200 mb-4">
