@@ -59,12 +59,41 @@ function ReportCard({ report }) {
         </div>
         
         <div className="flex flex-wrap gap-2 mb-4">
-          {report.stats.map((stat, index) => (
-            <div key={index} className="flex flex-col">
-              <span className="text-2xl font-semibold text-gray-800">{stat.value}</span>
-              <span className="text-xs text-gray-500">{stat.label}</span>
-            </div>
-          ))}
+          {report.stats.map((stat, index) => {
+            let bgColorClass = '';
+            const label = stat.label.toLowerCase();
+            if (label.includes('petrol')) {
+              bgColorClass = 'bg-yellow-100';
+            } else if (label.includes('premium')) {
+              bgColorClass = 'bg-blue-100';
+            } else if (label.includes('diesel') || label.includes('regular')) {
+              bgColorClass = 'bg-green-100';
+            } else if (['active', 'on leave', 'new hires'].some(keyword => label.includes(keyword))) {
+              // Staff section colors: map 'active' to yellow, 'on leave' to blue, 'new hires' to green
+              if (label.includes('active')) {
+                bgColorClass = 'bg-yellow-100';
+              } else if (label.includes('on leave')) {
+                bgColorClass = 'bg-blue-100';
+              } else if (label.includes('new hires')) {
+                bgColorClass = 'bg-green-100';
+              }
+            } else if (['active pumps', 'maintenance', 'offline'].some(keyword => label.includes(keyword))) {
+              // Pump management colors: map 'active pumps' to yellow, 'maintenance' to blue, 'offline' to green
+              if (label.includes('active pumps')) {
+                bgColorClass = 'bg-yellow-100';
+              } else if (label.includes('maintenance')) {
+                bgColorClass = 'bg-blue-100';
+              } else if (label.includes('offline')) {
+                bgColorClass = 'bg-green-100';
+              }
+            }
+            return (
+              <div key={index} className={`flex flex-col p-2 rounded-md ${bgColorClass}`}>
+                <span className="text-2xl font-semibold text-gray-800">{stat.value}</span>
+                <span className="text-xs text-gray-500">{stat.label}</span>
+              </div>
+            );
+          })}
         </div>
         
         <div className="flex flex-wrap gap-2">
