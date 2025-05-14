@@ -93,10 +93,8 @@ function ReportCard({ report }) {
       <Modal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)}
-        title={report.title}
-      >
-        <ReportTable report={report} />
-      </Modal>
+        reportId={report.id}
+      />
     </div>
   );
 }
