@@ -103,7 +103,7 @@ const AppContent = () => {
                 </PrivateRoute>
               }
             />
-            {/* <Route
+            <Route
               path="/Report"
               element={
                 <PrivateRoute>
@@ -112,7 +112,7 @@ const AppContent = () => {
                   </PageWrapper>
                 </PrivateRoute>
               }
-            /> */}
+            />
             <Route path="/login" element={<Login />} />
             <Route
               path="*"
