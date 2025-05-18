@@ -1,3 +1,4 @@
+/* main dashboard component */
 import React, { useState } from 'react';
 import TodaysSales from './TodaysSales';
 import FuelInventory from './FuelInventory';

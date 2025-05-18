@@ -1,3 +1,4 @@
+// system alerts component
 import React from 'react';
 
 const SystemAlerts = () => {

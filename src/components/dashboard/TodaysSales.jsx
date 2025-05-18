@@ -1,3 +1,4 @@
+// taday's sales component
 import React from 'react';
 
 const TodaysSales = () => {

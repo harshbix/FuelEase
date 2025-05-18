@@ -1,3 +1,4 @@
+// Dashboard page
 import React from 'react';
 
 const PumpStationMonitor = () => {
