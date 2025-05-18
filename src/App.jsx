@@ -17,7 +17,7 @@ import Login from "./components/login/Login";
 import Dashboard from "./components/dashboard/dashboard";
 import Navbar from "./components/Navbar/navbar";
 import PrivateRoute from "./components/privateRoute";
-// import ReportPage from "./components/report/reportspage";
+import ReportPage from "./components/report/reportspage";
 
 const PageWrapper = ({ children }) => (
   <motion.div
@@ -103,16 +103,14 @@ const AppContent = () => {
                 </PrivateRoute>
               }
             />
-            {/* <Route
+            <Route
               path="/Report"
-              element={
-                <PrivateRoute>
+              element={ 
                   <PageWrapper>
                     <ReportPage />
                   </PageWrapper>
-                </PrivateRoute>
               }
-            /> */}
+            />
             <Route path="/login" element={<Login />} />
             <Route
               path="*"
