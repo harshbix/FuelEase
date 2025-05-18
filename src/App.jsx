@@ -17,7 +17,7 @@ import Login from "./components/login/Login";
 import Dashboard from "./components/dashboard/dashboard";
 import Navbar from "./components/Navbar/navbar";
 import PrivateRoute from "./components/privateRoute";
-// import ReportPage from "./components/report/reportspage";
+import ReportPage from "./components/report/reportspage";
 
 const PageWrapper = ({ children }) => (
   <motion.div
