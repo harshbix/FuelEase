@@ -20,7 +20,7 @@ function ReportCard({ report }) {
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden border border-gray-100 transform transition-transform duration-300 hover:-translate-y-1">
+    <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden border border-gray-100 transform transition-transform duration-300 hover:-translate-y-1 hover:scale-105">
         <div className="p-6">
           <div className="flex justify-between items-start mb-4">
             <div className="flex items-center">
