@@ -45,7 +45,6 @@ const AppContent = () => {
 
     document.title = routeTitles[location.pathname] || "Not Found - FuelEase";
   }, [location.pathname]);
-import ReportPage from "./components/report/reportspage";
 
   return (
     <>
@@ -116,19 +115,6 @@ import ReportPage from "./components/report/reportspage";
         </AnimatePresence>
       </div>
     </>
-    <Router>
-      <Routes>
-        {/* Catch-all route for 404 */}
-        <Route path="*" element={<NotFound />} />
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/Prices" element={<Prices />} />
-        <Route path="/Inventory" element={<InventoryPage /> } />
-        <Route path="/Pump" element={<PumpManagement />} />
-        <Route path="/Staff" element={<StaffManagement />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/report" element={<ReportPage />} />
-      </Routes>
-    </Router>
   );
 };
 
