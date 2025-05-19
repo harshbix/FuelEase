@@ -1,0 +1,124 @@
+[33m061ff2d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mAcie[m[33m)[m Revert "pop-up hover effect"
+[33mb2f6ed3[m[33m ([m[1;31morigin/Acie[m[33m)[m Merge branch 'main' into Acie
+[33m7d50e24[m Merge branch 'main' into Acie
+[33mf8ac433[m[33m ([m[1;32mmain[m[33m)[m Update App.jsx
+[33mc83fa3d[m Update App.jsx
+[33mc91466e[m Update App.jsx
+[33mf79ce60[m Update App.jsx
+[33m9e7527d[m Update App.jsx
+[33md78cce6[m Merge branch 'Acie'
+[33mfaf4cd2[m pop-up hover effect
+[33m13ca589[m card hover effect
+[33mee0a594[m page editing
+[33meb1314f[m more pop-up styling
+[33m9fe7e9d[m card styling
+[33me7a1615[m interactive  pop-up card
+[33m4e09c3f[m styling the pop-up card
+[33m8fd8ac8[m detailed pop-up cards
+[33mb889041[m navigation bar to report page
+[33m17cbb73[m report page to app
+[33me814b76[m report page and testing
+[33m3facddb[m Revert "change curency"
+[33m495a4fd[m Reapply "report page"
+[33m8caa265[m Revert "change curency"
+[33m9dddf95[m Revert "report page"
+[33mf90ac3e[m report page
+[33m05e1e5e[m Merge pull request #4 from mwombeki6/mwombeki6-patch-1
+[33mb18c5e0[m Update README.md
+[33md009eb1[m background
+[33m6f69b4f[m improved data fetching and login functionality
+[33ma8661c6[m protected sign in
+[33m0092d68[m Merge branch 'fay'
+[33m615085d[m code refactor
+[33mfa3c307[m Update navbar.jsx
+[33m65a256f[m[33m ([m[1;31morigin/fay[m[33m, [m[1;32mfay[m[33m)[m edit and maintenance functionality in pump update
+[33m392bd42[m code refacctor for nav.jsx
+[33mf0e6a14[m Update app.css
+[33m2ebe3c0[m removed overflow on all pages and improved log in page
+[33m8064ac1[m Create users.json
+[33m15201ce[m Merge branch 'fay'
+[33mddbf889[m changes to head according to the active link
+[33mee77c42[m Merge branch 'main' into fay
+[33m296e2ec[m successful message on login page
+[33m3fd6f1e[m Merge branch 'fay'
+[33m2eb8961[m change curency
+[33mb3ce29c[m Merge branch 'main' into Acie
+[33m6c03038[m Merge branch 'main' into Acie
+[33me3b1c39[m file description
+[33m92a70c8[m fancy animations
+[33m58b39fc[m Merge branch 'main' into fay
+[33m6b9ea4c[m validation checks added in login
+[33m158b8a0[m Merge branch 'fay'
+[33m44d1d19[m pump btn improvement
+[33m4ff33cd[m row.name split removed, no profile place holder
+[33m6b413ee[m Merge branch 'main' into fay
+[33m2e76e45[m update of pump and staff pop up forms and responsiveness
+[33m3dd4957[m responsive fixation
+[33mf776502[m Merge branch 'TJ'
+[33m94c2fc6[m added fonts roboto to global styles
+[33m5116f2e[m Added black in hover effect and changed from gray 200 to gray 50
+[33m36ec563[m color changes to bg-gray-50
+[33m9c96548[m added navbar functionality
+[33mfd25e34[m imported font locally
+[33m08267a9[m Update index.html
+[33mcd291f0[m added font and deleted favicon
+[33m0349321[m code refactor
+[33mec9c786[m made a loader
+[33mef74905[m Merge branch 'main' into fay
+[33me0aae0d[m Merge branch 'fay' of https://github.com/harshbix/FuelEase into fay
+[33m206396f[m Merge branch 'main' into TJ
+[33m10313c2[m reduced the pixela
+[33m6016daf[m improved routing
+[33m00f7391[m Merge remote-tracking branch 'origin/Acie'
+[33m5024f9f[m Merge branch 'TJ'
+[33mff25fff[m Update App.jsx
+[33m5ca14db[m few modifications, bugs and fixes
+[33m012db7f[m Update App.jsx
+[33ma9c21c0[m added more routes
+[33m03a094b[m simple routing improvements
+[33m7a86603[m added more route for pricing
+[33m297f5b5[m sign in update
+[33m803913f[m changed dollars to tshs
+[33m937ccc9[m Added up the edit and delete buttons and delivery time column
+[33mda54bb2[m made a 404 page
+[33m2ec00d4[m added roboto font and react router
+[33mbac1033[m navbar
+[33m66f87c2[m addded button functionalities
+[33m1c756fd[m text sizing minimization
+[33m03f54d8[m introduced navbar to prices
+[33m06f2e38[m Update Prices.jsx
+[33m99edea4[m fixed json eerrors and TJ merge
+[33m896ae18[m Merge branch 'TJ'
+[33mac2bcf3[m starter files
+[33mb7fe7ce[m Update App.jsx
+[33m6efca36[m made required folders for fay's components
+[33m8ef05d2[m merging
+[33m83b6074[m Merge branch 'main' into fay
+[33m424d5e3[m Update package-lock.json
+[33me5a9008[m make starter for fay branch
+[33mbaca1a3[m Create life
+[33m79ce916[m running the dashboard
+[33m05a2a83[m dashboard component
+[33m162dfac[m export CSV
+[33m802eab2[m Pumps to Prices
+[33me306d2e[m fixed card changes
+[33mbaa37e6[m code refactor
+[33mc1701d9[m Update pump.jsx
+[33me94a337[m Update pump.jsx
+[33m3877606[m Update pump.jsx
+[33md01599d[m Update App.jsx
+[33m1668d8d[m Update pump.jsx
+[33mf27dfc7[m data fixed for visibility and dynamic
+[33mccacc2a[m Update pump.jsx
+[33mdf73986[m pump page from figma to code
+[33m4e546ea[m Merge pull request #1 from harshbix/TJ
+[33m71162b1[m Update main.jsx
+[33m08ff823[m Update main.jsx
+[33m2aba93b[m Create app.css
+[33m2cc58c7[m log in starter files
+[33m1c65db4[m log in implementation without logic
+[33m29ef143[m tailwind css successful
+[33m9c5a3db[m Update vite.config.js
+[33m17b21d8[m vite
+[33mb9a8c98[m starter files
+[33m8aac1cd[m Initial commit
