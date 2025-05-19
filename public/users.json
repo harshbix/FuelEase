@@ -1,0 +1,17 @@
+[
+    {
+      "email": "john@fuelease.com",
+      "password": "password123",
+      "name": "John Smith",
+      "position": "Manager",
+      "contacts": "+1234567890"
+    },
+    {
+      "email": "jane@fuelease.com",
+      "password": "password456",
+      "name": "Jane Doe",
+      "position": "Clerk",
+      "contacts": "+9876543210"
+    }
+  ]
+  
