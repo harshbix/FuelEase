@@ -7,35 +7,35 @@ const fuelData = [
 ];
 
 const deliveryData = [
-  { 
+  {
     id: 1,
-    type: "Petrol", 
-    amount: 5000, 
+    type: "Petrol",
+    amount: 5000,
     requestTime: "2024-01-24 10:30",
     deliveryTime: "2024-01-25 09:00",
-    status: "Scheduled", 
-    deliveryPrice: 150, 
-    deliveryLocation: "123 Main St" 
+    status: "Scheduled",
+    deliveryPrice: 150,
+    deliveryLocation: "123 Main St"
   },
-  { 
+  {
     id: 2,
-    type: "Diesel", 
-    amount: 4000, 
+    type: "Diesel",
+    amount: 4000,
     requestTime: "2024-01-25 08:15",
-    deliveryTime: "2024-01-26 14:30", 
-    status: "Scheduled", 
-    deliveryPrice: 120, 
-    deliveryLocation: "456 Oak Ave" 
+    deliveryTime: "2024-01-26 14:30",
+    status: "Scheduled",
+    deliveryPrice: 120,
+    deliveryLocation: "456 Oak Ave"
   },
-  { 
+  {
     id: 3,
-    type: "Premium", 
-    amount: 3000, 
+    type: "Premium",
+    amount: 3000,
     requestTime: "2024-01-26 13:45",
-    deliveryTime: "", 
-    status: "Pending", 
-    deliveryPrice: 0, 
-    deliveryLocation: "" 
+    deliveryTime: "",
+    status: "Pending",
+    deliveryPrice: 0,
+    deliveryLocation: ""
   },
 ];
 
@@ -75,7 +75,7 @@ const deliveryData = [
       }
       return delivery;
     });
-    
+
     setDeliveries(updatedDeliveries);
     setShowModal(false);
     setSelectedOrder(null);
@@ -118,11 +118,11 @@ const deliveryData = [
   return (
     <div className="relative">
       {/* Main content with conditional blur */}
-      <div className={`p-6 bg-gray-200 min-h-screen pt-24 ${showModal || showDeleteModal ? 'blur-sm' : ''}`}>
+      <div className={`px-3 bg-gray-50 pt-10 ${showModal || showDeleteModal ? 'blur-sm' : ''}`}>
         {/* Header with Schedule Delivery button */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-3xl font-bold text-gray-900">Inventory Management</h2>
-          <button 
+          <button
             className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg transition-colors"
             onClick={() => {
               setShowModal(true);
@@ -213,7 +213,7 @@ const deliveryData = [
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-2 py-1 text-xs font-medium rounded-full 
-                          ${item.status === 'Scheduled' ? 'bg-green-100 text-green-800' : 
+                          ${item.status === 'Scheduled' ? 'bg-green-100 text-green-800' :
                             'bg-yellow-100 text-yellow-800'}`}>
                           {item.status}
                         </span>
@@ -251,13 +251,13 @@ const deliveryData = [
 
       {/* Schedule/Edit Modal */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="fixed bg-black/40 inset-0 flex items-center justify-center z-50">
           {/* Modal Content */}
           <div className="bg-gray-100 p-6 rounded-lg shadow-xl w-full max-w-md">
             <h3 className="text-xl font-semibold mb-4">
               {isEditing ? 'Edit Delivery' : 'Schedule Delivery'}
             </h3>
-            
+
             {/* Select Pending Order (only shown when not editing) */}
             {!isEditing && (
               <div className="mb-4">
@@ -277,8 +277,8 @@ const deliveryData = [
                 >
                   <option value="">Select an order</option>
                   {pendingOrders.map((order, index) => (
-                    <option 
-                      key={index} 
+                    <option
+                      key={index}
                       value={`${order.type}-${order.amount}`}
                     >
                       {order.type} - {order.amount}L - {order.requestTime}
@@ -396,7 +396,7 @@ const deliveryData = [
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="fixed bg-black/40 inset-0 flex items-center justify-center z-50">
           <div className="bg-gray-100 p-6 rounded-lg shadow-xl w-full max-w-md">
             <h3 className="text-xl font-semibold mb-4">Confirm Deletion</h3>
             <p className="mb-6">Are you sure you want to delete this delivery order?</p>
