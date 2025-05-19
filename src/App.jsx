@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./app.css";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -18,6 +18,9 @@ import Dashboard from "./components/dashboard/dashboard";
 import Navbar from "./components/Navbar/navbar";
 import PrivateRoute from "./components/privateRoute";
 
+import ReportPage from "./components/Report/components/ReportPage";
+import { reportsData } from "./components/Report/data/reportsData";
+
 const PageWrapper = ({ children }) => (
   <motion.div
     initial={{ opacity: 0, y: 15 }}
@@ -33,6 +36,11 @@ const AppContent = () => {
   const location = useLocation();
   const hideNavbar = location.pathname === "/login";
 
+  const [dateRange, setDateRange] = useState({
+    startDate: '',
+    endDate: ''
+  });
+
   useEffect(() => {
     const routeTitles = {
       "/": "Dashboard - FuelEase",
@@ -41,6 +49,7 @@ const AppContent = () => {
       "/Pump": "Pump Management - FuelEase",
       "/Staff": "Staff Management - FuelEase",
       "/login": "Login - FuelEase",
+      "/Report": "Report - FuelEase",
     };
 
     document.title = routeTitles[location.pathname] || "Not Found - FuelEase";
@@ -98,6 +107,16 @@ const AppContent = () => {
                 <PrivateRoute>
                   <PageWrapper>
                     <StaffManagement />
+                  </PageWrapper>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/Report"
+              element={
+                <PrivateRoute>
+                  <PageWrapper>
+                    <ReportPage data={reportsData} dateRange={dateRange} setDateRange={setDateRange} />
                   </PageWrapper>
                 </PrivateRoute>
               }
