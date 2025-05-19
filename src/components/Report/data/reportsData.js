@@ -78,9 +78,9 @@ export const reportsData = [
     iconColor: 'text-purple-500',
     lastUpdated: '3 days ago',
     stats: [
-      { label: 'Regular', value: '$3.45' },
-      { label: 'Premium', value: '$3.89' },
-      { label: 'Diesel', value: '$3.75' }
+      { label: 'Regular', value: 'Tsh 3900' },
+      { label: 'Premium', value: 'Tsh 3892' },
+      { label: 'Diesel', value: 'Tsh 3993' }
     ],
     tags: [
       { label: 'Price History', color: 'bg-purple-100 text-purple-800' },
