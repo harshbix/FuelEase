@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -8,6 +9,8 @@ const Login = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -88,26 +91,42 @@ const Login = () => {
               {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
             </div>
 
-            <div>
+            <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
               <input
-                type="password"
-                className="w-full h-11 px-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type={showPassword ? "text" : "password"}
+                className="w-full h-11 px-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              <button
+                type="button"
+                className="absolute right-3 top-9 text-gray-500 hover:text-gray-700 focus:outline-none"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
               {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password}</p>}
             </div>
 
             {isSignIn && (
-              <div>
+              <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
                 <input
-                  type="password"
-                  className="w-full h-11 px-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  type={showConfirmPassword ? "text" : "password"}
+                  className="w-full h-11 px-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
+                <button
+                  type="button"
+                  className="absolute right-3 top-9 text-gray-500 hover:text-gray-700 focus:outline-none"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                >
+                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
                 {errors.confirmPassword && (
                   <p className="text-sm text-red-500 mt-1">{errors.confirmPassword}</p>
                 )}
