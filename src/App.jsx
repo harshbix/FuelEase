@@ -7,6 +7,8 @@ import {
   Route,
   useLocation,
 } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import NotFound from "./components/NotFound";
 import Prices from "./components/Prices/Prices";
@@ -20,6 +22,17 @@ import PrivateRoute from "./components/privateRoute";
 
 import ReportPage from "./components/Report/components/ReportPage";
 import { reportsData } from "./components/Report/data/reportsData";
+
+// Create a query client instance
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 2,
+      staleTime: 1000 * 60 * 5 // 5 minutes
+    }
+  }
+});
 
 const PageWrapper = ({ children }) => (
   <motion.div
@@ -138,9 +151,12 @@ const AppContent = () => {
 };
 
 const App = () => (
-  <Router>
-    <AppContent />
-  </Router>
+  <QueryClientProvider client={queryClient}>
+    <Router>
+      <AppContent />
+    </Router>
+    <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+  </QueryClientProvider>
 );
 
 export default App;
