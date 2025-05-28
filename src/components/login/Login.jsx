@@ -1,150 +1,75 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
-const dummyUser = {
-  email: "john@fuelease.com",
-  password: "password123",
-  name: "John Smith",
-  position: "Manager",
-  contacts: "+1234567890",
-};
+// src/components/Login.jsx
+import React, { useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { Link } from '@tanstack/react-router';
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isSignIn, setIsSignIn] = useState(false);
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState("");
 
-  const navigate = useNavigate();
+  const handleSubmit = async () => {
+    try {
+      const res = await axios.post("https://fuel-ease-api.mwombekilubere.workers.dev/api/users/login", {
+        email,
+        password,
+      });
 
-  const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
-
-  const handleSubmit = () => {
-    const newErrors = {};
-    setSuccessMessage("");
-
-    if (!email) newErrors.email = "Email is required.";
-    else if (!isValidEmail(email)) newErrors.email = "Enter a valid email.";
-
-    if (!password) newErrors.password = "Password is required.";
-    else if (password.length < 6) newErrors.password = "Minimum 6 characters.";
-
-    if (isSignIn) {
-      if (!confirmPassword) newErrors.confirmPassword = "Confirm your password.";
-      else if (confirmPassword !== password) newErrors.confirmPassword = "Passwords do not match.";
-    }
-
-    setErrors(newErrors);
-
-    if (Object.keys(newErrors).length === 0) {
-      if (!isSignIn) {
-        if (email === dummyUser.email && password === dummyUser.password) {
-          localStorage.setItem("isLoggedIn", "true");
-          localStorage.setItem("userProfile", JSON.stringify(dummyUser));
-          setSuccessMessage("Signed in successfully!");
-          setTimeout(() => navigate("/"), 1500);
-        } else {
-          setErrors({ password: "Invalid credentials." });
-        }
-      } else {
-        setSuccessMessage("Signed up successfully!");
-      }
+      toast.success("Login successful!");
+      console.log("Login response:", res.data);
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Login failed.");
     }
   };
 
-  useEffect(() => {
-    if (successMessage) {
-      const timer = setTimeout(() => setSuccessMessage(""), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [successMessage]);
-
   return (
-    <>
-      {successMessage && (
-        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-100 border border-green-400 text-green-700 px-6 py-3 rounded shadow-lg z-50">
-          {successMessage}
+    <div className="flex items-center justify-center min-h-screen bg-gray-200">
+      <div className="w-[400px] bg-white rounded-lg shadow-md p-6">
+        <h1 className="text-2xl font-medium text-gray-900 mb-4 text-center">
+          FuelEase Station Manager - Login
+        </h1>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Email
+          </label>
+          <input
+            type="email"
+            className="w-full h-12 px-3 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
-      )}
 
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <div className="w-[400px] bg-white rounded-2xl shadow-lg p-6">
-          <h2 className="text-2xl font-semibold text-center text-blue-800 mb-6">
-            FuelEase Station Manager
-          </h2>
-
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-              <input
-                type="email"
-                className="w-full h-11 px-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-              <input
-                type="password"
-                className="w-full h-11 px-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              {errors.password && <p className="text-sm text-red-500 mt-1">{errors.password}</p>}
-            </div>
-
-            {isSignIn && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
-                <input
-                  type="password"
-                  className="w-full h-11 px-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-                {errors.confirmPassword && (
-                  <p className="text-sm text-red-500 mt-1">{errors.confirmPassword}</p>
-                )}
-              </div>
-            )}
-          </div>
-
-          {!isSignIn && (
-            <div className="flex items-center justify-between mt-4">
-              <label className="text-sm text-gray-700 flex items-center">
-                <input type="checkbox" className="mr-2" /> Remember me
-              </label>
-              <a href="#" className="text-sm text-blue-700 hover:underline">
-                Forgot password?
-              </a>
-            </div>
-          )}
-
-          <button
-            className="w-full mt-6 h-12 bg-blue-800 text-white font-semibold rounded hover:bg-blue-700 transition"
-            onClick={handleSubmit}
-          >
-            {isSignIn ? "Sign Up" : "Sign In"}
-          </button>
-
-          <button
-            className="w-full mt-3 h-12 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition"
-            onClick={() => {
-              setIsSignIn(!isSignIn);
-              setErrors({});
-              setSuccessMessage("");
-            }}
-          >
-            {isSignIn ? "Back to Login" : "Create an Account"}
-          </button>
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Password
+          </label>
+          <input
+            type="password"
+            className="w-full h-12 px-3 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
+
+        <button
+          className="w-full h-12 bg-blue-800 text-white rounded-sm hover:bg-blue-700 transition"
+          onClick={handleSubmit}
+        >
+          Login
+        </button>
+
+        <p className="mt-4 text-center text-sm">
+          Don’t have an account?{" "}
+          <Link to="/register" className="text-blue-800 hover:underline">
+            Register
+          </Link>
+        </p>
       </div>
-    </>
+    </div>
   );
 };
 
