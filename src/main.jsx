@@ -1,5 +1,5 @@
-// main.jsx
 import React from "react";
+import './app.css';
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "@tanstack/react-router";
 import { router } from "./routes";

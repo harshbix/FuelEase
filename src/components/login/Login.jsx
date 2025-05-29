@@ -1,22 +1,24 @@
-// src/components/Login.jsx
 import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Link } from '@tanstack/react-router';
+import { Link, useNavigate } from "@tanstack/react-router";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async () => {
     try {
-      const res = await axios.post("https://fuel-ease-api.mwombekilubere.workers.dev/api/users/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "https://fuel-ease-api.mwombekilubere.workers.dev/api/users/login",
+        { email, password }
+      );
 
       toast.success("Login successful!");
       console.log("Login response:", res.data);
+      navigate({ to: "/" });
     } catch (err) {
       toast.error(err?.response?.data?.message || "Login failed.");
     }
